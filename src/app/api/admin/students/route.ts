@@ -1,58 +1,49 @@
 import { NextRequest, NextResponse } from "next/server"
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs"
-import path from "path"
-
-const DATA_DIR = path.join(process.cwd(), "data")
-const STUDENTS_FILE = path.join(DATA_DIR, "students.json")
+import { readConfigFile, writeConfigFile } from "@/lib/drive"
+import studentsJson from "../../../../../data/students.json"
 
 function checkAdmin(req: NextRequest): boolean {
   return req.headers.get("x-admin-password") === process.env.ADMIN_PASSWORD
 }
 
-function getStudents(): Record<string, string> {
-  try {
-    return JSON.parse(readFileSync(STUDENTS_FILE, "utf-8"))
-  } catch {
-    return {}
-  }
-}
-
-function saveStudents(students: Record<string, string>) {
-  if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true })
-  writeFileSync(STUDENTS_FILE, JSON.stringify(students, null, 2), "utf-8")
+async function getStudents(): Promise<Record<string, string>> {
+  return readConfigFile<Record<string, string>>("students.json", studentsJson)
 }
 
 export async function GET(req: NextRequest) {
   if (!checkAdmin(req)) {
     return NextResponse.json({ error: "אין הרשאה" }, { status: 401 })
   }
-  return NextResponse.json(getStudents())
+  return NextResponse.json(await getStudents())
 }
 
 export async function POST(req: NextRequest) {
   if (!checkAdmin(req)) {
     return NextResponse.json({ error: "אין הרשאה" }, { status: 401 })
   }
-
   const { id, name } = await req.json()
   if (!id || !name) {
     return NextResponse.json({ error: "חסרים פרטים" }, { status: 400 })
   }
-
-  const students = getStudents()
-  students[id] = name
-  saveStudents(students)
-  return NextResponse.json({ success: true })
+  try {
+    const students = await getStudents()
+    students[id] = name
+    await writeConfigFile("students.json", students)
+    return NextResponse.json({ success: true })
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error("students POST error:", msg)
+    return NextResponse.json({ error: msg }, { status: 500 })
+  }
 }
 
 export async function DELETE(req: NextRequest) {
   if (!checkAdmin(req)) {
     return NextResponse.json({ error: "אין הרשאה" }, { status: 401 })
   }
-
   const { id } = await req.json()
-  const students = getStudents()
+  const students = await getStudents()
   delete students[id]
-  saveStudents(students)
+  await writeConfigFile("students.json", students)
   return NextResponse.json({ success: true })
 }
