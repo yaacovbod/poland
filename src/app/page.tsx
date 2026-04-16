@@ -4,7 +4,235 @@ import { useState, useEffect } from "react"
 import { ScheduleDay } from "./api/admin/schedule/route"
 import { PdfItem } from "./api/pdfs/route"
 
-type Tab = "schedule" | "download" | "upload" | "payment"
+type Tab = "schedule" | "download" | "upload" | "payment" | "prep"
+
+/* ─── נתוני הכנה למסע ─── */
+type Topic = { title: string; desc: string }
+type PrepSession = {
+  num: number
+  title: string
+  date: string
+  dayOfWeek: string
+  time?: string
+  leader?: string
+  topics: Topic[]
+}
+type PrepDayGroup = {
+  kind: "day"
+  groupTitle: string
+  date: string
+  dayOfWeek: string
+  sessions: PrepSession[]
+}
+type PrepSingle = { kind: "single"; session: PrepSession }
+type PrepSpecial = {
+  kind: "special"
+  title: string
+  dateLabel: string
+  dayOfWeek?: string
+  time?: string
+  leader?: string
+  duration?: string
+  topics: Topic[]
+}
+type PrepBlock = PrepSingle | PrepDayGroup | PrepSpecial
+
+const PREP: PrepBlock[] = [
+  {
+    kind: "single",
+    session: {
+      num: 1,
+      title: "פתיחה וגיבוש המשלחת",
+      date: "03/06/2026",
+      dayOfWeek: "יום רביעי",
+      time: "15:00-16:30",
+      leader: "אדר",
+      topics: [
+        { title: "תיאום ציפיות", desc: "בירור הפחדים, התקוות והשאיפות האישיות של כל חבר במשלחת." },
+        { title: "זהות יהודית", desc: "דיון עומק בשאלת השייכות והקשר האישי להיסטוריה היהודית." },
+        { title: "אמנת משלחת", desc: "יצירת מסמך הסכמות משותף לגבי אופי ההתנהלות במסע." },
+        { title: "גבולות", desc: "הגדרת חוקים ברורים ונהלי התנהגות מצופים." },
+      ],
+    },
+  },
+  {
+    kind: "single",
+    session: {
+      num: 2,
+      title: "החיים היהודיים בפולין — חלק א",
+      date: "07/06/2026",
+      dayOfWeek: "יום ראשון",
+      time: "13:00-14:30",
+      leader: "יעקב",
+      topics: [
+        { title: "שורשים", desc: "סקירה של ההיסטוריה המוקדמת וההתיישבות הראשונית." },
+        { title: "מרכז עולם", desc: "ניתוח הגורמים שהפכו את פולין למוקד היהדות העולמי." },
+        { title: "עושר רוחני", desc: "דגש מיוחד על עולם הישיבות, פסיקת ההלכה והפריחה התורנית." },
+      ],
+    },
+  },
+  {
+    kind: "single",
+    session: {
+      num: 3,
+      title: "החיים היהודיים בפולין — חלק ב",
+      date: "10/06/2026",
+      dayOfWeek: "יום רביעי",
+      time: "15:00-17:30",
+      leader: "יעקב",
+      topics: [
+        { title: "חברה בתמורות", desc: "בחינת הקהילה היהודית במאות ה-19 וה-20." },
+        { title: "זרמים וקונפליקטים", desc: "המתח והשילוב בין עולם החסידות לתנועת ההשכלה." },
+        { title: "פוליטיקה יהודית", desc: "היכרות עם התנועה הציונית, תנועת הבונד והתארגנויות פוליטיות אחרות." },
+      ],
+    },
+  },
+  {
+    kind: "single",
+    session: {
+      num: 4,
+      title: "רקע היסטורי — מלחמת העולם השנייה",
+      date: "23/06/2026",
+      dayOfWeek: "יום שלישי",
+      time: "15:00-17:30",
+      topics: [
+        { title: "אירופה המשתנה", desc: "סקירת המצב הפוליטי והחברתי בין שתי מלחמות העולם." },
+        { title: "עליית הנאציזם", desc: "ניתוח הדרכים שבהן היטלר והמפלגה הנאצית תפסו את השלטון." },
+        { title: "אידאולוגיה", desc: "הבנת עקרונות תורת הגזע והשקפת העולם הגרמנית באותה תקופה." },
+        { title: "אנטישמיות מודרנית", desc: "בחינת השוני בין שנאת ישראל המסורתית לאנטישמיות הגזענית." },
+      ],
+    },
+  },
+  {
+    kind: "day",
+    groupTitle: "בוקר עיון 1",
+    date: "28/06/2026",
+    dayOfWeek: "יום ראשון",
+    sessions: [
+      {
+        num: 5,
+        title: "דילמות ערכיות בשואה — חלק א",
+        date: "28/06/2026",
+        dayOfWeek: "יום ראשון",
+        time: "09:00-10:30",
+        leader: "אדר",
+        topics: [
+          { title: "מוסר בקצה", desc: "דיון בנושא \"בחירה מול הישרדות\" וההבדל ביניהם בתנאי גטו ומחנה." },
+          { title: "חסידי אומות עולם", desc: "היכרות עם דמויות שבחרו לפעול למען הזולת תוך סיכון חיים." },
+          { title: "הספקטרום המוסרי", desc: "דיון על אדישות חברתית לעומת מעורבות פעילה." },
+        ],
+      },
+      {
+        num: 6,
+        title: "דילמות ערכיות בשואה — חלק ב",
+        date: "28/06/2026",
+        dayOfWeek: "יום ראשון",
+        time: "10:45-12:15",
+        leader: "אדר",
+        topics: [
+          { title: "המשך העמקה", desc: "ניתוח מקרי בוחן נוספים של התמודדות אנושית במצבי קיצון." },
+          { title: "היבטים קבוצתיים", desc: "כיצד הדילמות הללו רלוונטיות לערכים שאנו לוקחים איתנו למסע." },
+        ],
+      },
+    ],
+  },
+  {
+    kind: "day",
+    groupTitle: "בוקר עיון 2",
+    date: "29/06/2026",
+    dayOfWeek: "יום שני",
+    sessions: [
+      {
+        num: 7,
+        title: "מהלכי המלחמה (סקירה תמציתית)",
+        date: "29/06/2026",
+        dayOfWeek: "יום שני",
+        time: "09:00-10:30",
+        leader: "יעקב",
+        topics: [
+          { title: "פרוץ המלחמה", desc: "הנסיבות המדיניות והצבאיות שהובילו לתחילת הקרבות." },
+          { title: "כיבושים", desc: "שלבי ההשתלטות של גרמניה על אירופה." },
+          { title: "נקודות מפנה", desc: "האירועים המכריעים ששינו את מאזן הכוחות." },
+          { title: "שחרור וסיום", desc: "המהלכים האחרונים שהובילו לסיום המלחמה ב-1945." },
+        ],
+      },
+      {
+        num: 8,
+        title: "השואה בתוך המלחמה (סקירה תמציתית)",
+        date: "29/06/2026",
+        dayOfWeek: "יום שני",
+        time: "10:45-12:15",
+        leader: "יעקב",
+        topics: [
+          { title: "חקיקה ובידוד", desc: "מהחוקים האנטי-יהודיים ועד הנישול הכלכלי והחברתי." },
+          { title: "הגטאות", desc: "הקמת הגטאות והחיים בתוכם כשלב מעבר." },
+          { title: "הפתרון הסופי", desc: "תחילת ההשמדה ההמונית והקמת מחנות המוות." },
+          { title: "התנגדות ושחרור", desc: "מרד הגטאות, לחימת פרטיזנים והמפגש עם כוחות השחרור." },
+        ],
+      },
+    ],
+  },
+  {
+    kind: "special",
+    title: 'סמינר במכון "משואה"',
+    dateLabel: "06-07/09/2026",
+    dayOfWeek: "יום ראשון-שני",
+    duration: "15 שעות",
+    topics: [
+      { title: "יום עיון אינטנסיבי", desc: "הכולל היבטים רגשיים, חברתיים והיסטוריים." },
+      { title: "פעילות חווייתית", desc: "המכינה את הקבוצה לקראת היציאה הפיזית." },
+    ],
+  },
+  {
+    kind: "special",
+    title: "מפגש הכנה רגשית",
+    dateLabel: "16/09/2026",
+    dayOfWeek: "יום רביעי",
+    time: "אחרי הצהריים",
+    leader: "נטלי",
+    duration: "3 שעות",
+    topics: [
+      { title: "כלים רגשיים", desc: "מתן כלים להתמודדות עם העומס הרגשי הצפוי במהלך הביקורים באתרים." },
+      { title: "מעגלי תמיכה", desc: "יצירת מעגלי תמיכה פנים קבוצתיים." },
+    ],
+  },
+  {
+    kind: "special",
+    title: "מפגש הכנת טקסים",
+    dateLabel: "16/09/2026",
+    dayOfWeek: "יום רביעי",
+    leader: "אדר",
+    duration: "3 שעות",
+    topics: [
+      { title: "תכנון הטקסים", desc: "תכנון הטקסים שייערכו באתרים השונים בפולין." },
+      { title: "חלוקת תפקידים", desc: "בחירת שירים וקטעי קריאה המייצגים את הקבוצה." },
+    ],
+  },
+  {
+    kind: "special",
+    title: 'שיחת ביטחון ונהלים (קב"ט)',
+    dateLabel: "04/10/2026",
+    dayOfWeek: "יום ראשון",
+    duration: "שעתיים",
+    topics: [
+      { title: "נהלי ביטחון", desc: "מתן הנחיות ביטחון קפדניות להתנהלות בחו\"ל." },
+      { title: "סגירת קצוות לוגיסטיים", desc: "סגירת קצוות לוגיסטיים אחרונים לפני היציאה לנמל התעופה." },
+    ],
+  },
+  {
+    kind: "special",
+    title: "מפגש הורים לקראת היציאה למסע",
+    dateLabel: "08/10/2026",
+    dayOfWeek: "יום חמישי",
+    duration: "שעתיים",
+    topics: [
+      { title: "שותפות ההורים", desc: "הצגת מטרות המסע והתהליך החינוכי שהתלמידים עברו." },
+      { title: "עדכונים לוגיסטיים", desc: "פירוט מסלול הטיסה, רשימת ציוד וסדרי תקשורת." },
+      { title: "ביטחון ובטיחות", desc: "סקירת נהלי הביטחון והנחיות הקב\"ט להורים." },
+      { title: "מענה רגשי", desc: "כיצד ההורים יכולים לתמוך בילדיהם לפני ובמהלך המסע." },
+    ],
+  },
+]
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<Tab>("schedule")
@@ -50,6 +278,7 @@ export default function Home() {
 
   const tabs: { id: Tab; label: string; icon: string }[] = [
     { id: "schedule", label: 'לו"ז המסע', icon: "◈" },
+    { id: "prep", label: "הכנה למסע", icon: "◐" },
     { id: "download", label: "הורדת טפסים", icon: "◎" },
     { id: "upload", label: "העלאת טפסים", icon: "◉" },
     { id: "payment", label: "תשלום", icon: "◇" },
@@ -181,82 +410,86 @@ export default function Home() {
         {activeTab === "schedule" && (
           <div>
             <SectionTitle>לוח זמנים</SectionTitle>
-            {schedule.length === 0 ? (
-              <EmptyState icon="◈" text='הלו"ז יתפרסם בקרוב' />
-            ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                {schedule.map((day, index) => (
-                  <div
-                    key={day.id}
-                    className="memory-card"
-                    style={{
-                      background: "#1a1710",
-                      border: "1px solid rgba(201,168,76,0.2)",
+            <EmptyState icon="◈" text='לו"ז המסע יתפרסם בקרוב' />
+          </div>
+        )}
+
+        {/* הכנה למסע */}
+        {activeTab === "prep" && (
+          <div>
+            <SectionTitle>הכנה למסע — מחזור ג</SectionTitle>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              {PREP.map((block, bi) => {
+                if (block.kind === "single") {
+                  return <PrepSessionCard key={bi} session={block.session} />
+                }
+                if (block.kind === "day") {
+                  return (
+                    <div key={bi} style={{
+                      border: "1px solid rgba(201,168,76,0.3)",
                       borderRadius: "4px",
                       overflow: "hidden",
-                    }}
-                  >
-                    {/* Day header */}
-                    <div style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "1rem",
-                      padding: "0.9rem 1.25rem",
-                      background: "rgba(201,168,76,0.07)",
-                      borderBottom: "1px solid rgba(201,168,76,0.15)",
+                      background: "#1a1710",
                     }}>
+                      {/* Day group header */}
                       <div style={{
-                        width: "32px",
-                        height: "32px",
-                        borderRadius: "50%",
-                        border: "1px solid #c9a84c",
+                        background: "rgba(201,168,76,0.12)",
+                        borderBottom: "1px solid rgba(201,168,76,0.25)",
+                        padding: "0.65rem 1.25rem",
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "0.8rem",
-                        fontWeight: 700,
-                        color: "#c9a84c",
-                        flexShrink: 0,
+                        gap: "0.75rem",
                       }}>
-                        {index + 1}
+                        <span style={{ fontSize: "0.95rem", fontWeight: 800, color: "#c9a84c" }}>{block.groupTitle}</span>
+                        <span style={{ fontSize: "0.75rem", color: "#9a8f7a" }}>{block.dayOfWeek} · {block.date}</span>
                       </div>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontWeight: 700, fontSize: "0.95rem", color: "#f5f0e8" }}>{day.title}</div>
-                        <div style={{ fontSize: "0.75rem", color: "#9a8f7a", marginTop: "0.1rem" }}>
-                          {new Date(day.date).toLocaleDateString("he-IL", {
-                            weekday: "long",
-                            day: "numeric",
-                            month: "long",
-                            year: "numeric",
-                          })}
-                          {day.location && (
-                            <span style={{ color: "#c9a84c", marginRight: "0.5rem" }}>· {day.location}</span>
-                          )}
-                        </div>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+                        {block.sessions.map((s, si) => (
+                          <div key={si} style={{ borderBottom: si < block.sessions.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none" }}>
+                            <PrepSessionCard session={s} nested />
+                          </div>
+                        ))}
                       </div>
                     </div>
-
-                    {/* Activities */}
-                    <ul style={{ padding: "0.9rem 1.25rem", margin: 0, listStyle: "none" }}>
-                      {day.activities.map((act, i) => (
-                        <li key={i} style={{
-                          display: "flex",
-                          alignItems: "flex-start",
-                          gap: "0.75rem",
-                          padding: "0.35rem 0",
-                          fontSize: "0.88rem",
-                          color: "#c8bfad",
-                          borderBottom: i < day.activities.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none",
-                        }}>
-                          <span style={{ color: "#c9a84c", fontSize: "0.5rem", marginTop: "0.45rem", flexShrink: 0 }}>◆</span>
-                          {act}
+                  )
+                }
+                // special
+                return (
+                  <div key={bi} className="memory-card" style={{
+                    background: "#1a1710",
+                    border: "1px solid rgba(201,168,76,0.2)",
+                    borderRadius: "4px",
+                    overflow: "hidden",
+                  }}>
+                    <div style={{
+                      padding: "0.75rem 1.25rem",
+                      borderBottom: "1px solid rgba(201,168,76,0.15)",
+                      display: "flex",
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      gap: "0.5rem 1rem",
+                    }}>
+                      <span style={{ fontWeight: 700, fontSize: "0.92rem", color: "#f5f0e8" }}>{block.title}</span>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem 0.75rem", fontSize: "0.72rem", color: "#9a8f7a" }}>
+                        {block.dayOfWeek && <span>{block.dayOfWeek}</span>}
+                        <span style={{ color: "#c9a84c" }}>· {block.dateLabel}</span>
+                        {block.time && <span>· {block.time}</span>}
+                        {block.leader && <span>· הובלה: {block.leader}</span>}
+                        {block.duration && <span>· {block.duration}</span>}
+                      </div>
+                    </div>
+                    <ul style={{ padding: "0.75rem 1.25rem", margin: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                      {block.topics.map((t, ti) => (
+                        <li key={ti} style={{ display: "flex", gap: "0.6rem", fontSize: "0.84rem", color: "#c8bfad", alignItems: "flex-start" }}>
+                          <span style={{ color: "#c9a84c", fontSize: "0.45rem", marginTop: "0.45rem", flexShrink: 0 }}>◆</span>
+                          <span><strong style={{ color: "#e8c97a", fontWeight: 600 }}>{t.title}:</strong> {t.desc}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
-                ))}
-              </div>
-            )}
+                )
+              })}
+            </div>
           </div>
         )}
 
@@ -551,6 +784,61 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
         marginTop: "0.75rem",
         borderRadius: "1px",
       }} />
+    </div>
+  )
+}
+
+function PrepSessionCard({ session, nested }: { session: PrepSession; nested?: boolean }) {
+  return (
+    <div className={nested ? "" : "memory-card"} style={{
+      background: nested ? "transparent" : "#1a1710",
+      border: nested ? "none" : "1px solid rgba(201,168,76,0.2)",
+      borderRadius: nested ? 0 : "4px",
+      overflow: "hidden",
+    }}>
+      {/* Session header */}
+      <div style={{
+        padding: nested ? "0.7rem 1.25rem" : "0.75rem 1.25rem",
+        borderBottom: "1px solid rgba(201,168,76,0.12)",
+        background: nested ? "rgba(255,255,255,0.02)" : "rgba(201,168,76,0.07)",
+        display: "flex",
+        flexWrap: "wrap",
+        alignItems: "center",
+        gap: "0.5rem 0.9rem",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+          <span style={{
+            background: "rgba(201,168,76,0.15)",
+            border: "1px solid rgba(201,168,76,0.3)",
+            borderRadius: "3px",
+            padding: "0.1rem 0.45rem",
+            fontSize: "0.65rem",
+            fontWeight: 700,
+            color: "#c9a84c",
+            letterSpacing: "0.05em",
+            flexShrink: 0,
+          }}>
+            {session.num}
+          </span>
+          <span style={{ fontWeight: 700, fontSize: "0.9rem", color: "#f5f0e8" }}>{session.title}</span>
+        </div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem 0.65rem", fontSize: "0.72rem", color: "#9a8f7a" }}>
+          <span>{session.dayOfWeek}</span>
+          <span style={{ color: "#6b6355" }}>·</span>
+          <span>{session.date}</span>
+          {session.time && <><span style={{ color: "#6b6355" }}>·</span><span style={{ color: "#c9a84c" }}>{session.time}</span></>}
+          {session.leader && <><span style={{ color: "#6b6355" }}>·</span><span>הובלה: {session.leader}</span></>}
+        </div>
+      </div>
+      {/* Topics */}
+      <ul style={{ padding: "0.7rem 1.25rem", margin: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+        {session.topics.map((t, i) => (
+          <li key={i} style={{ display: "flex", gap: "0.6rem", fontSize: "0.84rem", color: "#c8bfad", alignItems: "flex-start" }}>
+            <span style={{ color: "#c9a84c", fontSize: "0.45rem", marginTop: "0.45rem", flexShrink: 0 }}>◆</span>
+            <span><strong style={{ color: "#e8c97a", fontWeight: 600 }}>{t.title}:</strong> {t.desc}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
