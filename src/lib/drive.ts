@@ -1,86 +1,136 @@
-import { google } from "googleapis"
 import { Readable } from "stream"
-
-function getAuth() {
-  return new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET
-  )
-}
-
-export function getDriveClient() {
-  const auth = getAuth()
-  auth.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN })
-  return google.drive({ version: "v3", auth })
-}
 
 const ROOT_FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID!
 const CONFIG_FOLDER_NAME = "_config"
+const TOKEN_URL = "https://oauth2.googleapis.com/token"
+const DRIVE_API = "https://www.googleapis.com/drive/v3"
+const DRIVE_UPLOAD = "https://www.googleapis.com/upload/drive/v3"
+
+// ── Auth ───────────────────────────────────────────────────────────────────
+
+async function getAccessToken(): Promise<string> {
+  const res = await fetch(TOKEN_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      client_id: process.env.GOOGLE_CLIENT_ID!,
+      client_secret: process.env.GOOGLE_CLIENT_SECRET!,
+      refresh_token: process.env.GOOGLE_REFRESH_TOKEN!,
+      grant_type: "refresh_token",
+    }),
+  })
+  const data = await res.json()
+  if (!data.access_token) throw new Error("Failed to get access token: " + JSON.stringify(data))
+  return data.access_token
+}
+
+async function driveGet(path: string, token: string) {
+  const res = await fetch(`${DRIVE_API}${path}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  return res.json()
+}
+
+async function drivePost(path: string, token: string, body: unknown) {
+  const res = await fetch(`${DRIVE_API}${path}`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  })
+  return res.json()
+}
+
+async function driveMultipart(
+  token: string,
+  metadata: object,
+  content: string | Buffer,
+  mimeType: string,
+  fileId?: string
+) {
+  const boundary = "boundary_" + Date.now()
+  const metaPart = JSON.stringify(metadata)
+  const contentStr = typeof content === "string" ? content : content.toString("base64")
+  const encoding = typeof content === "string" ? "utf-8" : "base64"
+
+  const body =
+    `--${boundary}\r\nContent-Type: application/json\r\n\r\n${metaPart}\r\n` +
+    `--${boundary}\r\nContent-Type: ${mimeType}\r\nContent-Transfer-Encoding: ${encoding}\r\n\r\n${contentStr}\r\n` +
+    `--${boundary}--`
+
+  const url = fileId
+    ? `${DRIVE_UPLOAD}/files/${fileId}?uploadType=multipart`
+    : `${DRIVE_UPLOAD}/files?uploadType=multipart`
+
+  const res = await fetch(url, {
+    method: fileId ? "PATCH" : "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": `multipart/related; boundary=${boundary}`,
+    },
+    body,
+  })
+  return res.json()
+}
 
 // ── Config folder ─────────────────────────────────────────────────────────
 
-async function getConfigFolderId(): Promise<string> {
-  const drive = getDriveClient()
-  const search = await drive.files.list({
-    q: `name='${CONFIG_FOLDER_NAME}' and '${ROOT_FOLDER_ID}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`,
-    fields: "files(id)",
-  })
-  if (search.data.files?.length) return search.data.files[0].id!
+async function getConfigFolderId(token: string): Promise<string> {
+  const q = encodeURIComponent(
+    `name='${CONFIG_FOLDER_NAME}' and '${ROOT_FOLDER_ID}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`
+  )
+  const data = await driveGet(`/files?q=${q}&fields=files(id)`, token)
+  if (data.files?.length) return data.files[0].id
 
-  const folder = await drive.files.create({
-    requestBody: {
-      name: CONFIG_FOLDER_NAME,
-      mimeType: "application/vnd.google-apps.folder",
-      parents: [ROOT_FOLDER_ID],
-    },
-    fields: "id",
+  const folder = await drivePost("/files", token, {
+    name: CONFIG_FOLDER_NAME,
+    mimeType: "application/vnd.google-apps.folder",
+    parents: [ROOT_FOLDER_ID],
   })
-  return folder.data.id!
+  return folder.id
 }
 
-async function getConfigFileId(folderId: string, filename: string): Promise<string | null> {
-  const drive = getDriveClient()
-  const search = await drive.files.list({
-    q: `name='${filename}' and '${folderId}' in parents and trashed=false`,
-    fields: "files(id)",
-  })
-  return search.data.files?.[0]?.id ?? null
+async function getConfigFileId(
+  folderId: string,
+  filename: string,
+  token: string
+): Promise<string | null> {
+  const q = encodeURIComponent(
+    `name='${filename}' and '${folderId}' in parents and trashed=false`
+  )
+  const data = await driveGet(`/files?q=${q}&fields=files(id)`, token)
+  return data.files?.[0]?.id ?? null
 }
 
 export async function readConfigFile<T>(filename: string, fallback: T): Promise<T> {
   try {
-    const drive = getDriveClient()
-    const configFolderId = await getConfigFolderId()
-    const fileId = await getConfigFileId(configFolderId, filename)
+    const token = await getAccessToken()
+    const folderId = await getConfigFolderId(token)
+    const fileId = await getConfigFileId(folderId, filename, token)
     if (!fileId) return fallback
 
-    const res = await drive.files.get(
-      { fileId, alt: "media" },
-      { responseType: "text" }
-    )
-    return JSON.parse(res.data as string) as T
+    const res = await fetch(`${DRIVE_API}/files/${fileId}?alt=media`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    const text = await res.text()
+    return JSON.parse(text) as T
   } catch {
     return fallback
   }
 }
 
 export async function writeConfigFile<T>(filename: string, data: T): Promise<void> {
-  const drive = getDriveClient()
-  const configFolderId = await getConfigFolderId()
-  const existingId = await getConfigFileId(configFolderId, filename)
+  const token = await getAccessToken()
+  const folderId = await getConfigFolderId(token)
+  const existingId = await getConfigFileId(folderId, filename, token)
   const content = JSON.stringify(data, null, 2)
 
-  if (existingId) {
-    await drive.files.update({
-      fileId: existingId,
-      media: { mimeType: "application/json", body: Readable.from(content) },
-    })
-  } else {
-    await drive.files.create({
-      requestBody: { name: filename, parents: [configFolderId] },
-      media: { mimeType: "application/json", body: Readable.from(content) },
-    })
-  }
+  await driveMultipart(
+    token,
+    existingId ? {} : { name: filename, parents: [folderId] },
+    content,
+    "application/json",
+    existingId ?? undefined
+  )
 }
 
 // ── Student folders ────────────────────────────────────────────────────────
@@ -89,24 +139,20 @@ export async function getOrCreateStudentFolder(
   studentId: string,
   studentName: string
 ): Promise<string> {
-  const drive = getDriveClient()
+  const token = await getAccessToken()
   const folderName = `${studentId} - ${studentName}`
+  const q = encodeURIComponent(
+    `name='${folderName}' and '${ROOT_FOLDER_ID}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`
+  )
+  const data = await driveGet(`/files?q=${q}&fields=files(id)`, token)
+  if (data.files?.length) return data.files[0].id
 
-  const search = await drive.files.list({
-    q: `name='${folderName}' and '${ROOT_FOLDER_ID}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`,
-    fields: "files(id)",
+  const folder = await drivePost("/files", token, {
+    name: folderName,
+    mimeType: "application/vnd.google-apps.folder",
+    parents: [ROOT_FOLDER_ID],
   })
-  if (search.data.files?.length) return search.data.files[0].id!
-
-  const folder = await drive.files.create({
-    requestBody: {
-      name: folderName,
-      mimeType: "application/vnd.google-apps.folder",
-      parents: [ROOT_FOLDER_ID],
-    },
-    fields: "id",
-  })
-  return folder.data.id!
+  return folder.id
 }
 
 export async function uploadFileToStudentFolder(
@@ -115,37 +161,43 @@ export async function uploadFileToStudentFolder(
   mimeType: string,
   buffer: Buffer
 ): Promise<string> {
-  const drive = getDriveClient()
-
-  const file = await drive.files.create({
-    requestBody: { name: fileName, parents: [folderId] },
-    media: { mimeType, body: Readable.from(buffer) },
-    fields: "id, webViewLink",
-  })
-  return file.data.webViewLink ?? file.data.id!
+  const token = await getAccessToken()
+  const file = await driveMultipart(
+    token,
+    { name: fileName, parents: [folderId] },
+    buffer,
+    mimeType
+  )
+  return `https://drive.google.com/file/d/${file.id}/view`
 }
 
-// ── PDF upload ─────────────────────────────────────────────────────────────
-
 export async function uploadPdfToDrive(filename: string, buffer: Buffer): Promise<string> {
-  const drive = getDriveClient()
-  const configFolderId = await getConfigFolderId()
+  const token = await getAccessToken()
+  const folderId = await getConfigFolderId(token)
+  const file = await driveMultipart(
+    token,
+    { name: filename, parents: [folderId] },
+    buffer,
+    "application/pdf"
+  )
 
-  const file = await drive.files.create({
-    requestBody: { name: filename, parents: [configFolderId] },
-    media: { mimeType: "application/pdf", body: Readable.from(buffer) },
-    fields: "id",
+  // הפוך לציבורי
+  await fetch(`${DRIVE_API}/files/${file.id}/permissions`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ role: "reader", type: "anyone" }),
   })
 
-  await drive.permissions.create({
-    fileId: file.data.id!,
-    requestBody: { role: "reader", type: "anyone" },
-  })
-
-  return file.data.id!
+  return file.id
 }
 
 export async function deleteDriveFile(fileId: string): Promise<void> {
-  const drive = getDriveClient()
-  await drive.files.delete({ fileId })
+  const token = await getAccessToken()
+  await fetch(`${DRIVE_API}/files/${fileId}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` },
+  })
 }
+
+// keep Readable exported so existing code compiles
+export { Readable }
