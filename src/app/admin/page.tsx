@@ -7,22 +7,22 @@ import { PdfItem } from "../api/pdfs/route"
 type AdminTab = "students" | "pdfs" | "schedule"
 
 const G = {
-  bg: "#111111",
-  surface: "#1a1710",
-  surfaceHover: "#1f1c14",
-  border: "rgba(201,168,76,0.2)",
-  borderStrong: "rgba(201,168,76,0.4)",
-  gold: "#c9a84c",
-  goldDim: "rgba(201,168,76,0.12)",
-  text: "#f5f0e8",
-  muted: "#9a8f7a",
-  dim: "#4a4440",
-  danger: "#f87171",
-  dangerBg: "rgba(239,68,68,0.08)",
-  dangerBorder: "rgba(239,68,68,0.25)",
-  success: "#4ade80",
-  successBg: "rgba(34,197,94,0.08)",
-  successBorder: "rgba(34,197,94,0.25)",
+  bg: "#faf5f0",
+  surface: "#ffffff",
+  surfaceHover: "#f7f0eb",
+  border: "rgba(181,101,118,0.2)",
+  borderStrong: "rgba(181,101,118,0.4)",
+  gold: "#b56576",
+  goldDim: "rgba(181,101,118,0.1)",
+  text: "#3d2b2b",
+  muted: "#7a5c5c",
+  dim: "#a08080",
+  danger: "#c0392b",
+  dangerBg: "rgba(192,57,43,0.08)",
+  dangerBorder: "rgba(192,57,43,0.25)",
+  success: "#3a7a55",
+  successBg: "rgba(90,138,106,0.1)",
+  successBorder: "rgba(90,138,106,0.3)",
 }
 
 const inputStyle: React.CSSProperties = {
@@ -352,7 +352,7 @@ export default function AdminPage() {
 
       {/* Header */}
       <header style={{
-        background: "#0a0a0a",
+        background: "#ede3d8",
         borderBottom: `1px solid ${G.border}`,
         padding: "0.9rem 1.5rem",
         display: "flex",
@@ -386,7 +386,7 @@ export default function AdminPage() {
 
       {/* Tabs */}
       <nav style={{
-        background: "#0d0d0d",
+        background: "#ede3d8",
         borderBottom: `1px solid ${G.border}`,
         display: "flex",
         padding: "0 1.5rem",

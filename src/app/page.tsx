@@ -4,6 +4,24 @@ import { useState, useEffect } from "react"
 import { ScheduleDay } from "./api/admin/schedule/route"
 import { PdfItem } from "./api/pdfs/route"
 
+/* ─── Desert Rose Theme ─── */
+const T = {
+  bg: "#faf5f0",
+  bgDeep: "#f2ebe3",
+  bgNav: "#ede3d8",
+  surface: "#ffffff",
+  surfaceTint: "rgba(181,101,118,0.06)",
+  rose: "#b56576",
+  roseMid: "#c98a96",
+  rosePale: "rgba(181,101,118,0.12)",
+  border: "rgba(181,101,118,0.2)",
+  borderSub: "rgba(181,101,118,0.12)",
+  text: "#3d2b2b",
+  muted: "#7a5c5c",
+  dim: "#a08080",
+  veryDim: "#c8b0b0",
+}
+
 type Tab = "schedule" | "download" | "upload" | "payment" | "prep"
 
 /* ─── נתוני הכנה למסע ─── */
@@ -236,10 +254,10 @@ const PREP: PrepBlock[] = [
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<Tab>("schedule")
-  const [schedule, setSchedule] = useState<ScheduleDay[]>([])
   const [pdfs, setPdfs] = useState<PdfItem[]>([])
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_schedule, _setSchedule] = useState<ScheduleDay[]>([])
 
-  // Upload state
   const [studentId, setStudentId] = useState("")
   const [file, setFile] = useState<File | null>(null)
   const [uploadStatus, setUploadStatus] = useState<{
@@ -248,23 +266,18 @@ export default function Home() {
   }>({ type: "idle", message: "" })
 
   useEffect(() => {
-    fetch("/api/admin/schedule").then((r) => r.json()).then(setSchedule).catch(() => {})
     fetch("/api/pdfs").then((r) => r.json()).then(setPdfs).catch(() => {})
   }, [])
 
   async function handleUpload(e: React.FormEvent) {
     e.preventDefault()
     if (!studentId.trim() || !file) return
-
     setUploadStatus({ type: "loading", message: "מעלה קובץ..." })
-
     const formData = new FormData()
     formData.append("studentId", studentId.trim())
     formData.append("file", file)
-
     const res = await fetch("/api/upload", { method: "POST", body: formData })
     const data = await res.json()
-
     if (res.ok) {
       setUploadStatus({ type: "success", message: data.message })
       setStudentId("")
@@ -285,18 +298,18 @@ export default function Home() {
   ]
 
   return (
-    <div dir="rtl" style={{ minHeight: "100vh", background: "#111111", color: "#f5f0e8", position: "relative" }}>
+    <div dir="rtl" style={{ minHeight: "100vh", background: T.bg, color: T.text }}>
 
       {/* Hero Header */}
       <header style={{
-        background: "linear-gradient(180deg, #0a0a0a 0%, #1a1612 100%)",
-        borderBottom: "1px solid rgba(201,168,76,0.2)",
+        background: `linear-gradient(180deg, ${T.bgDeep} 0%, ${T.bgNav} 100%)`,
+        borderBottom: `1px solid ${T.border}`,
         paddingTop: "3rem",
         paddingBottom: "2.5rem",
         position: "relative",
         overflow: "hidden",
       }}>
-        {/* Background text watermark */}
+        {/* Watermark */}
         <div style={{
           position: "absolute",
           inset: 0,
@@ -305,7 +318,7 @@ export default function Home() {
           justifyContent: "center",
           fontSize: "12rem",
           fontWeight: 900,
-          color: "rgba(201,168,76,0.04)",
+          color: "rgba(181,101,118,0.07)",
           letterSpacing: "-0.05em",
           userSelect: "none",
           pointerEvents: "none",
@@ -315,7 +328,6 @@ export default function Home() {
         </div>
 
         <div style={{ maxWidth: "720px", margin: "0 auto", padding: "0 1.5rem", textAlign: "center", position: "relative" }}>
-          {/* Top ornament */}
           <div style={{ marginBottom: "1.5rem" }}>
             <div style={{
               display: "inline-flex",
@@ -323,13 +335,13 @@ export default function Home() {
               gap: "0.75rem",
               fontSize: "0.7rem",
               letterSpacing: "0.25em",
-              color: "#c9a84c",
+              color: T.rose,
               textTransform: "uppercase",
               fontWeight: 600,
             }}>
-              <span style={{ display: "block", width: "40px", height: "1px", background: "linear-gradient(to right, transparent, #c9a84c)" }} />
+              <span style={{ display: "block", width: "40px", height: "1px", background: `linear-gradient(to right, transparent, ${T.rose})` }} />
               מסע זיכרון
-              <span style={{ display: "block", width: "40px", height: "1px", background: "linear-gradient(to left, transparent, #c9a84c)" }} />
+              <span style={{ display: "block", width: "40px", height: "1px", background: `linear-gradient(to left, transparent, ${T.rose})` }} />
             </div>
           </div>
 
@@ -338,7 +350,7 @@ export default function Home() {
             fontWeight: 900,
             lineHeight: 1.1,
             marginBottom: "0.75rem",
-            color: "#f5f0e8",
+            color: T.text,
             letterSpacing: "-0.02em",
           }}>
             מסע לפולין
@@ -347,28 +359,22 @@ export default function Home() {
           <div style={{
             width: "60px",
             height: "2px",
-            background: "linear-gradient(to right, transparent, #c9a84c, transparent)",
+            background: `linear-gradient(to right, transparent, ${T.rose}, transparent)`,
             margin: "1rem auto",
           }} />
 
-          <p style={{
-            color: "#9a8f7a",
-            fontSize: "0.9rem",
-            letterSpacing: "0.05em",
-            marginBottom: "0",
-          }}>
+          <p style={{ color: T.muted, fontSize: "0.9rem", letterSpacing: "0.05em" }}>
             פורטל מידע לתלמידים והורים
           </p>
 
-          {/* Flag decoration */}
-          <div style={{ marginTop: "1.5rem", fontSize: "2rem", opacity: 0.8 }}>🇵🇱</div>
+          <div style={{ marginTop: "1.5rem", fontSize: "2rem", opacity: 0.85 }}>🇵🇱</div>
         </div>
       </header>
 
       {/* Navigation */}
       <nav style={{
-        background: "#0d0d0d",
-        borderBottom: "1px solid rgba(201,168,76,0.15)",
+        background: T.bgNav,
+        borderBottom: `1px solid ${T.border}`,
         position: "sticky",
         top: 0,
         zIndex: 50,
@@ -381,19 +387,20 @@ export default function Home() {
               style={{
                 flex: 1,
                 padding: "1rem 0.5rem",
-                fontSize: "0.8rem",
+                fontSize: "0.78rem",
                 fontWeight: 600,
                 letterSpacing: "0.03em",
                 border: "none",
                 cursor: "pointer",
                 transition: "all 0.2s ease",
                 background: "transparent",
-                color: activeTab === tab.id ? "#c9a84c" : "#6b6355",
-                borderBottom: activeTab === tab.id ? "2px solid #c9a84c" : "2px solid transparent",
+                color: activeTab === tab.id ? T.rose : T.dim,
+                borderBottom: activeTab === tab.id ? `2px solid ${T.rose}` : "2px solid transparent",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 gap: "0.25rem",
+                fontFamily: "inherit",
               }}
             >
               <span style={{ fontSize: "1rem" }}>{tab.icon}</span>
@@ -426,26 +433,26 @@ export default function Home() {
                 if (block.kind === "day") {
                   return (
                     <div key={bi} style={{
-                      border: "1px solid rgba(201,168,76,0.3)",
-                      borderRadius: "4px",
+                      border: `1px solid ${T.border}`,
+                      borderRadius: "6px",
                       overflow: "hidden",
-                      background: "#1a1710",
+                      background: T.surface,
+                      boxShadow: "0 1px 4px rgba(181,101,118,0.08)",
                     }}>
-                      {/* Day group header */}
                       <div style={{
-                        background: "rgba(201,168,76,0.12)",
-                        borderBottom: "1px solid rgba(201,168,76,0.25)",
+                        background: T.rosePale,
+                        borderBottom: `1px solid ${T.border}`,
                         padding: "0.65rem 1.25rem",
                         display: "flex",
                         alignItems: "center",
                         gap: "0.75rem",
                       }}>
-                        <span style={{ fontSize: "0.95rem", fontWeight: 800, color: "#c9a84c" }}>{block.groupTitle}</span>
-                        <span style={{ fontSize: "0.75rem", color: "#9a8f7a" }}>{block.dayOfWeek} · {block.date}</span>
+                        <span style={{ fontSize: "0.92rem", fontWeight: 800, color: T.rose }}>{block.groupTitle}</span>
+                        <span style={{ fontSize: "0.75rem", color: T.muted }}>{block.dayOfWeek} · {block.date}</span>
                       </div>
-                      <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+                      <div style={{ display: "flex", flexDirection: "column" }}>
                         {block.sessions.map((s, si) => (
-                          <div key={si} style={{ borderBottom: si < block.sessions.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none" }}>
+                          <div key={si} style={{ borderBottom: si < block.sessions.length - 1 ? `1px solid ${T.borderSub}` : "none" }}>
                             <PrepSessionCard session={s} nested />
                           </div>
                         ))}
@@ -453,26 +460,27 @@ export default function Home() {
                     </div>
                   )
                 }
-                // special
                 return (
                   <div key={bi} className="memory-card" style={{
-                    background: "#1a1710",
-                    border: "1px solid rgba(201,168,76,0.2)",
-                    borderRadius: "4px",
+                    background: T.surface,
+                    border: `1px solid ${T.border}`,
+                    borderRadius: "6px",
                     overflow: "hidden",
+                    boxShadow: "0 1px 4px rgba(181,101,118,0.06)",
                   }}>
                     <div style={{
                       padding: "0.75rem 1.25rem",
-                      borderBottom: "1px solid rgba(201,168,76,0.15)",
+                      borderBottom: `1px solid ${T.borderSub}`,
+                      background: T.surfaceTint,
                       display: "flex",
                       flexWrap: "wrap",
                       alignItems: "center",
                       gap: "0.5rem 1rem",
                     }}>
-                      <span style={{ fontWeight: 700, fontSize: "0.92rem", color: "#f5f0e8" }}>{block.title}</span>
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem 0.75rem", fontSize: "0.72rem", color: "#9a8f7a" }}>
+                      <span style={{ fontWeight: 700, fontSize: "0.92rem", color: T.text }}>{block.title}</span>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem 0.65rem", fontSize: "0.72rem", color: T.muted }}>
                         {block.dayOfWeek && <span>{block.dayOfWeek}</span>}
-                        <span style={{ color: "#c9a84c" }}>· {block.dateLabel}</span>
+                        <span style={{ color: T.rose }}>· {block.dateLabel}</span>
                         {block.time && <span>· {block.time}</span>}
                         {block.leader && <span>· הובלה: {block.leader}</span>}
                         {block.duration && <span>· {block.duration}</span>}
@@ -480,9 +488,9 @@ export default function Home() {
                     </div>
                     <ul style={{ padding: "0.75rem 1.25rem", margin: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
                       {block.topics.map((t, ti) => (
-                        <li key={ti} style={{ display: "flex", gap: "0.6rem", fontSize: "0.84rem", color: "#c8bfad", alignItems: "flex-start" }}>
-                          <span style={{ color: "#c9a84c", fontSize: "0.45rem", marginTop: "0.45rem", flexShrink: 0 }}>◆</span>
-                          <span><strong style={{ color: "#e8c97a", fontWeight: 600 }}>{t.title}:</strong> {t.desc}</span>
+                        <li key={ti} style={{ display: "flex", gap: "0.6rem", fontSize: "0.84rem", color: T.muted, alignItems: "flex-start" }}>
+                          <span style={{ color: T.roseMid, fontSize: "0.45rem", marginTop: "0.45rem", flexShrink: 0 }}>◆</span>
+                          <span><strong style={{ color: T.rose, fontWeight: 600 }}>{t.title}:</strong> {t.desc}</span>
                         </li>
                       ))}
                     </ul>
@@ -506,35 +514,35 @@ export default function Home() {
                     key={pdf.id}
                     className="memory-card"
                     style={{
-                      background: "#1a1710",
-                      border: "1px solid rgba(201,168,76,0.2)",
-                      borderRadius: "4px",
+                      background: T.surface,
+                      border: `1px solid ${T.border}`,
+                      borderRadius: "6px",
                       padding: "1rem 1.25rem",
                       display: "flex",
                       alignItems: "center",
                       gap: "1rem",
                       justifyContent: "space-between",
+                      boxShadow: "0 1px 4px rgba(181,101,118,0.06)",
                     }}
                   >
                     <div style={{ display: "flex", alignItems: "center", gap: "0.9rem" }}>
                       <div style={{
                         width: "36px",
                         height: "36px",
-                        border: "1px solid rgba(201,168,76,0.3)",
-                        borderRadius: "4px",
+                        border: `1px solid ${T.border}`,
+                        borderRadius: "6px",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        color: "#c9a84c",
+                        color: T.rose,
                         fontSize: "1rem",
                         flexShrink: 0,
-                      }}>
-                        ◎
-                      </div>
+                        background: T.surfaceTint,
+                      }}>◎</div>
                       <div>
-                        <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "#f5f0e8" }}>{pdf.name}</div>
+                        <div style={{ fontWeight: 600, fontSize: "0.9rem", color: T.text }}>{pdf.name}</div>
                         {pdf.description && (
-                          <div style={{ fontSize: "0.78rem", color: "#6b6355", marginTop: "0.1rem" }}>{pdf.description}</div>
+                          <div style={{ fontSize: "0.78rem", color: T.dim, marginTop: "0.1rem" }}>{pdf.description}</div>
                         )}
                       </div>
                     </div>
@@ -544,12 +552,12 @@ export default function Home() {
                       rel="noopener noreferrer"
                       style={{
                         background: "transparent",
-                        border: "1px solid #c9a84c",
-                        color: "#c9a84c",
+                        border: `1px solid ${T.rose}`,
+                        color: T.rose,
                         fontSize: "0.78rem",
                         fontWeight: 600,
                         padding: "0.45rem 1rem",
-                        borderRadius: "3px",
+                        borderRadius: "4px",
                         textDecoration: "none",
                         letterSpacing: "0.05em",
                         transition: "all 0.2s",
@@ -557,12 +565,12 @@ export default function Home() {
                         whiteSpace: "nowrap",
                       }}
                       onMouseEnter={e => {
-                        (e.target as HTMLElement).style.background = "#c9a84c"
-                        ;(e.target as HTMLElement).style.color = "#111"
+                        (e.target as HTMLElement).style.background = T.rose
+                        ;(e.target as HTMLElement).style.color = "#fff"
                       }}
                       onMouseLeave={e => {
                         (e.target as HTMLElement).style.background = "transparent"
-                        ;(e.target as HTMLElement).style.color = "#c9a84c"
+                        ;(e.target as HTMLElement).style.color = T.rose
                       }}
                     >
                       הורדה
@@ -578,30 +586,28 @@ export default function Home() {
         {activeTab === "upload" && (
           <div>
             <SectionTitle>העלאת טפסים</SectionTitle>
-            <p style={{ color: "#6b6355", fontSize: "0.85rem", marginBottom: "2rem", lineHeight: 1.7 }}>
+            <p style={{ color: T.muted, fontSize: "0.85rem", marginBottom: "2rem", lineHeight: 1.7 }}>
               הכנס את מספר תעודת הזהות שלך ובחר את הקובץ להעלאה. הקובץ יישמר בתיקייה האישית שלך.
             </p>
-
             <div style={{
-              background: "#1a1710",
-              border: "1px solid rgba(201,168,76,0.2)",
-              borderRadius: "4px",
+              background: T.surface,
+              border: `1px solid ${T.border}`,
+              borderRadius: "6px",
               padding: "2rem",
               maxWidth: "480px",
+              boxShadow: "0 1px 4px rgba(181,101,118,0.06)",
             }}>
               <form onSubmit={handleUpload} style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
                 <div>
                   <label style={{
                     display: "block",
-                    fontSize: "0.75rem",
-                    fontWeight: 600,
-                    color: "#c9a84c",
-                    letterSpacing: "0.1em",
+                    fontSize: "0.72rem",
+                    fontWeight: 700,
+                    color: T.rose,
+                    letterSpacing: "0.12em",
                     textTransform: "uppercase",
                     marginBottom: "0.5rem",
-                  }}>
-                    מספר תעודת זהות
-                  </label>
+                  }}>מספר תעודת זהות</label>
                   <input
                     type="text"
                     value={studentId}
@@ -610,52 +616,51 @@ export default function Home() {
                     maxLength={9}
                     style={{
                       width: "100%",
-                      background: "#111",
-                      border: "1px solid rgba(201,168,76,0.25)",
-                      borderRadius: "3px",
+                      background: T.bgDeep,
+                      border: `1px solid ${T.border}`,
+                      borderRadius: "4px",
                       padding: "0.75rem 1rem",
-                      color: "#f5f0e8",
+                      color: T.text,
                       fontSize: "0.9rem",
                       textAlign: "right",
                       outline: "none",
                       transition: "border-color 0.2s",
+                      fontFamily: "inherit",
                     }}
-                    onFocus={e => (e.target.style.borderColor = "#c9a84c")}
-                    onBlur={e => (e.target.style.borderColor = "rgba(201,168,76,0.25)")}
+                    onFocus={e => (e.target.style.borderColor = T.rose)}
+                    onBlur={e => (e.target.style.borderColor = T.border)}
                     required
                   />
                 </div>
-
                 <div>
                   <label style={{
                     display: "block",
-                    fontSize: "0.75rem",
-                    fontWeight: 600,
-                    color: "#c9a84c",
-                    letterSpacing: "0.1em",
+                    fontSize: "0.72rem",
+                    fontWeight: 700,
+                    color: T.rose,
+                    letterSpacing: "0.12em",
                     textTransform: "uppercase",
                     marginBottom: "0.5rem",
-                  }}>
-                    קובץ להעלאה
-                  </label>
+                  }}>קובץ להעלאה</label>
                   <input
                     id="file-input"
                     type="file"
                     onChange={(e) => setFile(e.target.files?.[0] ?? null)}
                     style={{
                       width: "100%",
-                      background: "#111",
-                      border: "1px solid rgba(201,168,76,0.25)",
-                      borderRadius: "3px",
+                      background: T.bgDeep,
+                      border: `1px solid ${T.border}`,
+                      borderRadius: "4px",
                       padding: "0.75rem 1rem",
-                      color: "#9a8f7a",
+                      color: T.muted,
                       fontSize: "0.85rem",
                       outline: "none",
+                      fontFamily: "inherit",
                     }}
                     accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
                     required
                   />
-                  <p style={{ fontSize: "0.72rem", color: "#4a4440", marginTop: "0.4rem" }}>
+                  <p style={{ fontSize: "0.72rem", color: T.veryDim, marginTop: "0.4rem" }}>
                     קבצים מותרים: PDF, תמונות, Word
                   </p>
                 </div>
@@ -663,14 +668,14 @@ export default function Home() {
                 {uploadStatus.type !== "idle" && (
                   <div style={{
                     padding: "0.75rem 1rem",
-                    borderRadius: "3px",
+                    borderRadius: "4px",
                     fontSize: "0.85rem",
                     border: "1px solid",
                     ...(uploadStatus.type === "success"
-                      ? { background: "rgba(34,197,94,0.08)", color: "#4ade80", borderColor: "rgba(34,197,94,0.25)" }
+                      ? { background: "rgba(90,138,106,0.1)", color: "#3a7a55", borderColor: "rgba(90,138,106,0.3)" }
                       : uploadStatus.type === "error"
-                      ? { background: "rgba(239,68,68,0.08)", color: "#f87171", borderColor: "rgba(239,68,68,0.25)" }
-                      : { background: "rgba(201,168,76,0.08)", color: "#c9a84c", borderColor: "rgba(201,168,76,0.25)" }),
+                      ? { background: "rgba(192,57,43,0.08)", color: "#c0392b", borderColor: "rgba(192,57,43,0.25)" }
+                      : { background: T.rosePale, color: T.rose, borderColor: T.border }),
                   }}>
                     {uploadStatus.message}
                   </div>
@@ -680,16 +685,17 @@ export default function Home() {
                   type="submit"
                   disabled={uploadStatus.type === "loading"}
                   style={{
-                    background: uploadStatus.type === "loading" ? "rgba(201,168,76,0.3)" : "#c9a84c",
+                    background: uploadStatus.type === "loading" ? T.veryDim : T.rose,
                     border: "none",
-                    borderRadius: "3px",
+                    borderRadius: "4px",
                     padding: "0.85rem",
-                    color: "#111",
+                    color: "#fff",
                     fontWeight: 700,
                     fontSize: "0.9rem",
                     cursor: uploadStatus.type === "loading" ? "not-allowed" : "pointer",
                     letterSpacing: "0.05em",
                     transition: "background 0.2s",
+                    fontFamily: "inherit",
                   }}
                 >
                   {uploadStatus.type === "loading" ? "מעלה..." : "העלה קובץ"}
@@ -704,45 +710,44 @@ export default function Home() {
           <div>
             <SectionTitle>תשלום</SectionTitle>
             <div style={{
-              background: "#1a1710",
-              border: "1px solid rgba(201,168,76,0.2)",
-              borderRadius: "4px",
+              background: T.surface,
+              border: `1px solid ${T.border}`,
+              borderRadius: "6px",
               padding: "4rem 2rem",
               textAlign: "center",
+              boxShadow: "0 1px 4px rgba(181,101,118,0.06)",
             }}>
               <div style={{
                 width: "64px",
                 height: "64px",
                 borderRadius: "50%",
-                border: "1px solid rgba(201,168,76,0.3)",
+                border: `1px solid ${T.border}`,
+                background: T.surfaceTint,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 margin: "0 auto 1.5rem",
                 fontSize: "1.5rem",
-                color: "#c9a84c",
-              }}>
-                ◇
-              </div>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: 600, color: "#f5f0e8", marginBottom: "0.5rem" }}>
+                color: T.rose,
+              }}>◇</div>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 600, color: T.text, marginBottom: "0.5rem" }}>
                 מערכת התשלום
               </h3>
-              <p style={{ color: "#4a4440", fontSize: "0.85rem" }}>קישור לתשלום יפורסם בקרוב</p>
+              <p style={{ color: T.dim, fontSize: "0.85rem" }}>קישור לתשלום יפורסם בקרוב</p>
             </div>
           </div>
         )}
 
       </main>
 
-      {/* Footer */}
       <footer style={{
-        borderTop: "1px solid rgba(201,168,76,0.1)",
+        borderTop: `1px solid ${T.border}`,
         padding: "1.5rem",
         textAlign: "center",
       }}>
         <div style={{
           fontSize: "0.7rem",
-          color: "#3a3530",
+          color: T.veryDim,
           letterSpacing: "0.1em",
           textTransform: "uppercase",
         }}>
@@ -760,9 +765,9 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
     <div style={{ marginBottom: "1.75rem" }}>
       <div style={{
         fontSize: "0.65rem",
-        fontWeight: 600,
+        fontWeight: 700,
         letterSpacing: "0.2em",
-        color: "#c9a84c",
+        color: T.roseMid,
         textTransform: "uppercase",
         marginBottom: "0.4rem",
       }}>
@@ -771,7 +776,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
       <h2 style={{
         fontSize: "1.6rem",
         fontWeight: 900,
-        color: "#f5f0e8",
+        color: T.text,
         lineHeight: 1.2,
         margin: 0,
       }}>
@@ -780,7 +785,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
       <div style={{
         width: "40px",
         height: "2px",
-        background: "#c9a84c",
+        background: T.rose,
         marginTop: "0.75rem",
         borderRadius: "1px",
       }} />
@@ -791,16 +796,16 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 function PrepSessionCard({ session, nested }: { session: PrepSession; nested?: boolean }) {
   return (
     <div className={nested ? "" : "memory-card"} style={{
-      background: nested ? "transparent" : "#1a1710",
-      border: nested ? "none" : "1px solid rgba(201,168,76,0.2)",
-      borderRadius: nested ? 0 : "4px",
+      background: nested ? "transparent" : T.surface,
+      border: nested ? "none" : `1px solid ${T.border}`,
+      borderRadius: nested ? 0 : "6px",
       overflow: "hidden",
+      boxShadow: nested ? "none" : "0 1px 4px rgba(181,101,118,0.06)",
     }}>
-      {/* Session header */}
       <div style={{
-        padding: nested ? "0.7rem 1.25rem" : "0.75rem 1.25rem",
-        borderBottom: "1px solid rgba(201,168,76,0.12)",
-        background: nested ? "rgba(255,255,255,0.02)" : "rgba(201,168,76,0.07)",
+        padding: "0.75rem 1.25rem",
+        borderBottom: `1px solid ${T.borderSub}`,
+        background: nested ? T.surfaceTint : T.rosePale,
         display: "flex",
         flexWrap: "wrap",
         alignItems: "center",
@@ -808,34 +813,33 @@ function PrepSessionCard({ session, nested }: { session: PrepSession; nested?: b
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
           <span style={{
-            background: "rgba(201,168,76,0.15)",
-            border: "1px solid rgba(201,168,76,0.3)",
+            background: T.rosePale,
+            border: `1px solid ${T.border}`,
             borderRadius: "3px",
             padding: "0.1rem 0.45rem",
             fontSize: "0.65rem",
             fontWeight: 700,
-            color: "#c9a84c",
+            color: T.rose,
             letterSpacing: "0.05em",
             flexShrink: 0,
           }}>
             {session.num}
           </span>
-          <span style={{ fontWeight: 700, fontSize: "0.9rem", color: "#f5f0e8" }}>{session.title}</span>
+          <span style={{ fontWeight: 700, fontSize: "0.9rem", color: T.text }}>{session.title}</span>
         </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem 0.65rem", fontSize: "0.72rem", color: "#9a8f7a" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem 0.6rem", fontSize: "0.72rem", color: T.muted }}>
           <span>{session.dayOfWeek}</span>
-          <span style={{ color: "#6b6355" }}>·</span>
+          <span style={{ color: T.veryDim }}>·</span>
           <span>{session.date}</span>
-          {session.time && <><span style={{ color: "#6b6355" }}>·</span><span style={{ color: "#c9a84c" }}>{session.time}</span></>}
-          {session.leader && <><span style={{ color: "#6b6355" }}>·</span><span>הובלה: {session.leader}</span></>}
+          {session.time && <><span style={{ color: T.veryDim }}>·</span><span style={{ color: T.rose }}>{session.time}</span></>}
+          {session.leader && <><span style={{ color: T.veryDim }}>·</span><span>הובלה: {session.leader}</span></>}
         </div>
       </div>
-      {/* Topics */}
       <ul style={{ padding: "0.7rem 1.25rem", margin: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
         {session.topics.map((t, i) => (
-          <li key={i} style={{ display: "flex", gap: "0.6rem", fontSize: "0.84rem", color: "#c8bfad", alignItems: "flex-start" }}>
-            <span style={{ color: "#c9a84c", fontSize: "0.45rem", marginTop: "0.45rem", flexShrink: 0 }}>◆</span>
-            <span><strong style={{ color: "#e8c97a", fontWeight: 600 }}>{t.title}:</strong> {t.desc}</span>
+          <li key={i} style={{ display: "flex", gap: "0.6rem", fontSize: "0.84rem", color: T.muted, alignItems: "flex-start" }}>
+            <span style={{ color: T.roseMid, fontSize: "0.45rem", marginTop: "0.45rem", flexShrink: 0 }}>◆</span>
+            <span><strong style={{ color: T.rose, fontWeight: 600 }}>{t.title}:</strong> {t.desc}</span>
           </li>
         ))}
       </ul>
@@ -846,14 +850,15 @@ function PrepSessionCard({ session, nested }: { session: PrepSession; nested?: b
 function EmptyState({ icon, text }: { icon: string; text: string }) {
   return (
     <div style={{
-      background: "#1a1710",
-      border: "1px solid rgba(201,168,76,0.15)",
-      borderRadius: "4px",
+      background: T.surface,
+      border: `1px solid ${T.border}`,
+      borderRadius: "6px",
       padding: "4rem 2rem",
       textAlign: "center",
+      boxShadow: "0 1px 4px rgba(181,101,118,0.06)",
     }}>
-      <div style={{ fontSize: "2rem", color: "rgba(201,168,76,0.3)", marginBottom: "1rem" }}>{icon}</div>
-      <p style={{ color: "#4a4440", fontSize: "0.9rem" }}>{text}</p>
+      <div style={{ fontSize: "2rem", color: T.roseMid, opacity: 0.4, marginBottom: "1rem" }}>{icon}</div>
+      <p style={{ color: T.dim, fontSize: "0.9rem" }}>{text}</p>
     </div>
   )
 }
