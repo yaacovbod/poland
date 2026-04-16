@@ -7,16 +7,16 @@ import { PdfItem } from "../api/pdfs/route"
 type AdminTab = "students" | "pdfs" | "schedule"
 
 const G = {
-  bg: "#faf5f0",
+  bg: "#f0f5f9",
   surface: "#ffffff",
-  surfaceHover: "#f7f0eb",
-  border: "rgba(181,101,118,0.2)",
-  borderStrong: "rgba(181,101,118,0.4)",
-  gold: "#b56576",
-  goldDim: "rgba(181,101,118,0.1)",
-  text: "#3d2b2b",
-  muted: "#7a5c5c",
-  dim: "#a08080",
+  surfaceHover: "#e3edf5",
+  border: "rgba(14,77,110,0.18)",
+  borderStrong: "rgba(14,77,110,0.35)",
+  gold: "#1a6b8a",
+  goldDim: "rgba(14,77,110,0.08)",
+  text: "#0d2d3d",
+  muted: "#3d6b80",
+  dim: "#7aaabb",
   danger: "#c0392b",
   dangerBg: "rgba(192,57,43,0.08)",
   dangerBorder: "rgba(192,57,43,0.25)",
@@ -352,7 +352,7 @@ export default function AdminPage() {
 
       {/* Header */}
       <header style={{
-        background: "#ede3d8",
+        background: "#d6e6f0",
         borderBottom: `1px solid ${G.border}`,
         padding: "0.9rem 1.5rem",
         display: "flex",
@@ -386,7 +386,7 @@ export default function AdminPage() {
 
       {/* Tabs */}
       <nav style={{
-        background: "#ede3d8",
+        background: "#d6e6f0",
         borderBottom: `1px solid ${G.border}`,
         display: "flex",
         padding: "0 1.5rem",

@@ -4,22 +4,22 @@ import { useState, useEffect } from "react"
 import { ScheduleDay } from "./api/admin/schedule/route"
 import { PdfItem } from "./api/pdfs/route"
 
-/* ─── Desert Rose Theme ─── */
+/* ─── Ocean Depths Theme ─── */
 const T = {
-  bg: "#faf5f0",
-  bgDeep: "#f2ebe3",
-  bgNav: "#ede3d8",
+  bg: "#f0f5f9",
+  bgDeep: "#e3edf5",
+  bgNav: "#d6e6f0",
   surface: "#ffffff",
-  surfaceTint: "rgba(181,101,118,0.06)",
-  rose: "#b56576",
-  roseMid: "#c98a96",
-  rosePale: "rgba(181,101,118,0.12)",
-  border: "rgba(181,101,118,0.2)",
-  borderSub: "rgba(181,101,118,0.12)",
-  text: "#3d2b2b",
-  muted: "#7a5c5c",
-  dim: "#a08080",
-  veryDim: "#c8b0b0",
+  surfaceTint: "rgba(14,77,110,0.05)",
+  rose: "#1a6b8a",
+  roseMid: "#4a9ab5",
+  rosePale: "rgba(14,77,110,0.1)",
+  border: "rgba(14,77,110,0.18)",
+  borderSub: "rgba(14,77,110,0.1)",
+  text: "#0d2d3d",
+  muted: "#3d6b80",
+  dim: "#7aaabb",
+  veryDim: "#b0ccd8",
 }
 
 type Tab = "schedule" | "download" | "upload" | "payment" | "prep"

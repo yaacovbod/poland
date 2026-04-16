@@ -5,8 +5,8 @@
 }
 
 body {
-  background: #faf5f0;
-  color: #3d2b2b;
+  background: #f0f5f9;
+  color: #0d2d3d;
   font-family: var(--font-heebo), 'Heebo', sans-serif;
 }
 
@@ -14,10 +14,10 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #ede3d8;
+  background: #d6e6f0;
 }
 ::-webkit-scrollbar-thumb {
-  background: #c98a96;
+  background: #4a9ab5;
   border-radius: 3px;
 }
 
@@ -35,5 +35,5 @@ body {
 }
 .memory-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(181, 101, 118, 0.12);
+  box-shadow: 0 6px 24px rgba(14, 77, 110, 0.12);
 }
