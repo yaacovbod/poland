@@ -367,7 +367,6 @@ export default function Home() {
             פורטל מידע לתלמידים והורים
           </p>
 
-          <div style={{ marginTop: "1.5rem", fontSize: "2rem", opacity: 0.85 }}>🇵🇱</div>
         </div>
       </header>
 
