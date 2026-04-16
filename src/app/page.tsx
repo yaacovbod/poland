@@ -253,7 +253,7 @@ const PREP: PrepBlock[] = [
 ]
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<Tab>("schedule")
+  const [activeTab, setActiveTab] = useState<Tab>("prep")
   const [pdfs, setPdfs] = useState<PdfItem[]>([])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_schedule, _setSchedule] = useState<ScheduleDay[]>([])
@@ -290,8 +290,8 @@ export default function Home() {
   }
 
   const tabs: { id: Tab; label: string; icon: string }[] = [
-    { id: "schedule", label: 'לו"ז המסע', icon: "◈" },
     { id: "prep", label: "הכנה למסע", icon: "◐" },
+    { id: "schedule", label: 'לו"ז המסע', icon: "◈" },
     { id: "download", label: "הורדת טפסים", icon: "◎" },
     { id: "upload", label: "העלאת טפסים", icon: "◉" },
     { id: "payment", label: "תשלום", icon: "◇" },
