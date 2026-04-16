@@ -49,77 +49,206 @@ export default function Home() {
   }
 
   const tabs: { id: Tab; label: string; icon: string }[] = [
-    { id: "schedule", label: 'לו"ז המסע', icon: "📅" },
-    { id: "download", label: "הורדת טפסים", icon: "📄" },
-    { id: "upload", label: "העלאת טפסים", icon: "📤" },
-    { id: "payment", label: "תשלום", icon: "💳" },
+    { id: "schedule", label: 'לו"ז המסע', icon: "◈" },
+    { id: "download", label: "הורדת טפסים", icon: "◎" },
+    { id: "upload", label: "העלאת טפסים", icon: "◉" },
+    { id: "payment", label: "תשלום", icon: "◇" },
   ]
 
   return (
-    <div dir="rtl" className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      {/* Header */}
-      <header className="bg-blue-900 text-white py-6 px-4 shadow-lg">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="text-4xl mb-2">🇵🇱</div>
-          <h1 className="text-3xl font-bold mb-1">מסע לפולין</h1>
-          <p className="text-blue-200 text-sm">פורטל מידע לתלמידים והורים</p>
+    <div dir="rtl" style={{ minHeight: "100vh", background: "#111111", color: "#f5f0e8", position: "relative" }}>
+
+      {/* Hero Header */}
+      <header style={{
+        background: "linear-gradient(180deg, #0a0a0a 0%, #1a1612 100%)",
+        borderBottom: "1px solid rgba(201,168,76,0.2)",
+        paddingTop: "3rem",
+        paddingBottom: "2.5rem",
+        position: "relative",
+        overflow: "hidden",
+      }}>
+        {/* Background text watermark */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "12rem",
+          fontWeight: 900,
+          color: "rgba(201,168,76,0.04)",
+          letterSpacing: "-0.05em",
+          userSelect: "none",
+          pointerEvents: "none",
+          lineHeight: 1,
+        }}>
+          POLAND
+        </div>
+
+        <div style={{ maxWidth: "720px", margin: "0 auto", padding: "0 1.5rem", textAlign: "center", position: "relative" }}>
+          {/* Top ornament */}
+          <div style={{ marginBottom: "1.5rem" }}>
+            <div style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.75rem",
+              fontSize: "0.7rem",
+              letterSpacing: "0.25em",
+              color: "#c9a84c",
+              textTransform: "uppercase",
+              fontWeight: 600,
+            }}>
+              <span style={{ display: "block", width: "40px", height: "1px", background: "linear-gradient(to right, transparent, #c9a84c)" }} />
+              מסע זיכרון
+              <span style={{ display: "block", width: "40px", height: "1px", background: "linear-gradient(to left, transparent, #c9a84c)" }} />
+            </div>
+          </div>
+
+          <h1 style={{
+            fontSize: "clamp(2.2rem, 6vw, 4rem)",
+            fontWeight: 900,
+            lineHeight: 1.1,
+            marginBottom: "0.75rem",
+            color: "#f5f0e8",
+            letterSpacing: "-0.02em",
+          }}>
+            מסע לפולין
+          </h1>
+
+          <div style={{
+            width: "60px",
+            height: "2px",
+            background: "linear-gradient(to right, transparent, #c9a84c, transparent)",
+            margin: "1rem auto",
+          }} />
+
+          <p style={{
+            color: "#9a8f7a",
+            fontSize: "0.9rem",
+            letterSpacing: "0.05em",
+            marginBottom: "0",
+          }}>
+            פורטל מידע לתלמידים והורים
+          </p>
+
+          {/* Flag decoration */}
+          <div style={{ marginTop: "1.5rem", fontSize: "2rem", opacity: 0.8 }}>🇵🇱</div>
         </div>
       </header>
 
-      {/* Tabs */}
-      <nav className="bg-white shadow-sm sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto flex overflow-x-auto">
+      {/* Navigation */}
+      <nav style={{
+        background: "#0d0d0d",
+        borderBottom: "1px solid rgba(201,168,76,0.15)",
+        position: "sticky",
+        top: 0,
+        zIndex: 50,
+      }}>
+        <div style={{ maxWidth: "720px", margin: "0 auto", display: "flex" }}>
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 min-w-max px-4 py-4 text-sm font-medium transition-colors border-b-2 ${
-                activeTab === tab.id
-                  ? "border-blue-700 text-blue-700 bg-blue-50"
-                  : "border-transparent text-gray-600 hover:text-blue-700 hover:bg-gray-50"
-              }`}
+              style={{
+                flex: 1,
+                padding: "1rem 0.5rem",
+                fontSize: "0.8rem",
+                fontWeight: 600,
+                letterSpacing: "0.03em",
+                border: "none",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+                background: "transparent",
+                color: activeTab === tab.id ? "#c9a84c" : "#6b6355",
+                borderBottom: activeTab === tab.id ? "2px solid #c9a84c" : "2px solid transparent",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "0.25rem",
+              }}
             >
-              <span className="ml-1">{tab.icon}</span>
+              <span style={{ fontSize: "1rem" }}>{tab.icon}</span>
               {tab.label}
             </button>
           ))}
         </div>
       </nav>
 
-      {/* Content */}
-      <main className="max-w-4xl mx-auto px-4 py-8">
+      {/* Main Content */}
+      <main style={{ maxWidth: "720px", margin: "0 auto", padding: "2.5rem 1.5rem" }} className="tab-content">
 
         {/* לו"ז */}
         {activeTab === "schedule" && (
           <div>
-            <h2 className="text-2xl font-bold text-blue-900 mb-6">לוח זמנים - מסע לפולין</h2>
+            <SectionTitle>לוח זמנים</SectionTitle>
             {schedule.length === 0 ? (
-              <p className="text-gray-500 text-center py-12">הלו&quot;ז יתפרסם בקרוב</p>
+              <EmptyState icon="◈" text='הלו"ז יתפרסם בקרוב' />
             ) : (
-              <div className="space-y-4">
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                 {schedule.map((day, index) => (
-                  <div key={day.id} className="bg-white rounded-xl shadow-sm border border-blue-100 overflow-hidden">
-                    <div className="bg-blue-800 text-white px-5 py-3 flex items-center gap-3">
-                      <span className="bg-blue-600 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                  <div
+                    key={day.id}
+                    className="memory-card"
+                    style={{
+                      background: "#1a1710",
+                      border: "1px solid rgba(201,168,76,0.2)",
+                      borderRadius: "4px",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {/* Day header */}
+                    <div style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "1rem",
+                      padding: "0.9rem 1.25rem",
+                      background: "rgba(201,168,76,0.07)",
+                      borderBottom: "1px solid rgba(201,168,76,0.15)",
+                    }}>
+                      <div style={{
+                        width: "32px",
+                        height: "32px",
+                        borderRadius: "50%",
+                        border: "1px solid #c9a84c",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "0.8rem",
+                        fontWeight: 700,
+                        color: "#c9a84c",
+                        flexShrink: 0,
+                      }}>
                         {index + 1}
-                      </span>
-                      <div>
-                        <div className="font-bold">{day.title}</div>
-                        <div className="text-blue-200 text-xs">
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontWeight: 700, fontSize: "0.95rem", color: "#f5f0e8" }}>{day.title}</div>
+                        <div style={{ fontSize: "0.75rem", color: "#9a8f7a", marginTop: "0.1rem" }}>
                           {new Date(day.date).toLocaleDateString("he-IL", {
                             weekday: "long",
                             day: "numeric",
                             month: "long",
                             year: "numeric",
                           })}
-                          {day.location && ` | ${day.location}`}
+                          {day.location && (
+                            <span style={{ color: "#c9a84c", marginRight: "0.5rem" }}>· {day.location}</span>
+                          )}
                         </div>
                       </div>
                     </div>
-                    <ul className="px-5 py-3 space-y-1">
+
+                    {/* Activities */}
+                    <ul style={{ padding: "0.9rem 1.25rem", margin: 0, listStyle: "none" }}>
                       {day.activities.map((act, i) => (
-                        <li key={i} className="flex items-start gap-2 text-gray-700 text-sm py-1">
-                          <span className="text-blue-500 mt-0.5">•</span>
+                        <li key={i} style={{
+                          display: "flex",
+                          alignItems: "flex-start",
+                          gap: "0.75rem",
+                          padding: "0.35rem 0",
+                          fontSize: "0.88rem",
+                          color: "#c8bfad",
+                          borderBottom: i < day.activities.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none",
+                        }}>
+                          <span style={{ color: "#c9a84c", fontSize: "0.5rem", marginTop: "0.45rem", flexShrink: 0 }}>◆</span>
                           {act}
                         </li>
                       ))}
@@ -134,29 +263,74 @@ export default function Home() {
         {/* הורדת טפסים */}
         {activeTab === "download" && (
           <div>
-            <h2 className="text-2xl font-bold text-blue-900 mb-6">טפסים להורדה</h2>
+            <SectionTitle>טפסים להורדה</SectionTitle>
             {pdfs.length === 0 ? (
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
-                <div className="text-5xl mb-4">📄</div>
-                <p className="text-gray-500">הטפסים יועלו בקרוב</p>
-              </div>
+              <EmptyState icon="◎" text="הטפסים יועלו בקרוב" />
             ) : (
-              <div className="grid gap-4">
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                 {pdfs.map((pdf) => (
-                  <div key={pdf.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <span className="text-3xl">📄</span>
+                  <div
+                    key={pdf.id}
+                    className="memory-card"
+                    style={{
+                      background: "#1a1710",
+                      border: "1px solid rgba(201,168,76,0.2)",
+                      borderRadius: "4px",
+                      padding: "1rem 1.25rem",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "1rem",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.9rem" }}>
+                      <div style={{
+                        width: "36px",
+                        height: "36px",
+                        border: "1px solid rgba(201,168,76,0.3)",
+                        borderRadius: "4px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "#c9a84c",
+                        fontSize: "1rem",
+                        flexShrink: 0,
+                      }}>
+                        ◎
+                      </div>
                       <div>
-                        <div className="font-semibold text-gray-800">{pdf.name}</div>
+                        <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "#f5f0e8" }}>{pdf.name}</div>
                         {pdf.description && (
-                          <div className="text-sm text-gray-500">{pdf.description}</div>
+                          <div style={{ fontSize: "0.78rem", color: "#6b6355", marginTop: "0.1rem" }}>{pdf.description}</div>
                         )}
                       </div>
                     </div>
                     <a
-                      href={`/pdfs/${pdf.filename}`}
-                      download
-                      className="bg-blue-700 hover:bg-blue-800 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+                      href={`https://drive.google.com/uc?export=download&id=${pdf.filename}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        background: "transparent",
+                        border: "1px solid #c9a84c",
+                        color: "#c9a84c",
+                        fontSize: "0.78rem",
+                        fontWeight: 600,
+                        padding: "0.45rem 1rem",
+                        borderRadius: "3px",
+                        textDecoration: "none",
+                        letterSpacing: "0.05em",
+                        transition: "all 0.2s",
+                        flexShrink: 0,
+                        whiteSpace: "nowrap",
+                      }}
+                      onMouseEnter={e => {
+                        (e.target as HTMLElement).style.background = "#c9a84c"
+                        ;(e.target as HTMLElement).style.color = "#111"
+                      }}
+                      onMouseLeave={e => {
+                        (e.target as HTMLElement).style.background = "transparent"
+                        ;(e.target as HTMLElement).style.color = "#c9a84c"
+                      }}
                     >
                       הורדה
                     </a>
@@ -170,13 +344,29 @@ export default function Home() {
         {/* העלאת טפסים */}
         {activeTab === "upload" && (
           <div>
-            <h2 className="text-2xl font-bold text-blue-900 mb-2">העלאת טפסים</h2>
-            <p className="text-gray-500 mb-6 text-sm">הכנס את מספר הת.ז שלך ובחר את הקובץ להעלאה. הקובץ יישמר בתיקייה האישית שלך.</p>
+            <SectionTitle>העלאת טפסים</SectionTitle>
+            <p style={{ color: "#6b6355", fontSize: "0.85rem", marginBottom: "2rem", lineHeight: 1.7 }}>
+              הכנס את מספר תעודת הזהות שלך ובחר את הקובץ להעלאה. הקובץ יישמר בתיקייה האישית שלך.
+            </p>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-lg">
-              <form onSubmit={handleUpload} className="space-y-5">
+            <div style={{
+              background: "#1a1710",
+              border: "1px solid rgba(201,168,76,0.2)",
+              borderRadius: "4px",
+              padding: "2rem",
+              maxWidth: "480px",
+            }}>
+              <form onSubmit={handleUpload} style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label style={{
+                    display: "block",
+                    fontSize: "0.75rem",
+                    fontWeight: 600,
+                    color: "#c9a84c",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    marginBottom: "0.5rem",
+                  }}>
                     מספר תעודת זהות
                   </label>
                   <input
@@ -185,36 +375,70 @@ export default function Home() {
                     onChange={(e) => setStudentId(e.target.value)}
                     placeholder="הכנס ת.ז"
                     maxLength={9}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-right focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    style={{
+                      width: "100%",
+                      background: "#111",
+                      border: "1px solid rgba(201,168,76,0.25)",
+                      borderRadius: "3px",
+                      padding: "0.75rem 1rem",
+                      color: "#f5f0e8",
+                      fontSize: "0.9rem",
+                      textAlign: "right",
+                      outline: "none",
+                      transition: "border-color 0.2s",
+                    }}
+                    onFocus={e => (e.target.style.borderColor = "#c9a84c")}
+                    onBlur={e => (e.target.style.borderColor = "rgba(201,168,76,0.25)")}
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    בחר קובץ להעלאה
+                  <label style={{
+                    display: "block",
+                    fontSize: "0.75rem",
+                    fontWeight: 600,
+                    color: "#c9a84c",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    marginBottom: "0.5rem",
+                  }}>
+                    קובץ להעלאה
                   </label>
                   <input
                     id="file-input"
                     type="file"
                     onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    style={{
+                      width: "100%",
+                      background: "#111",
+                      border: "1px solid rgba(201,168,76,0.25)",
+                      borderRadius: "3px",
+                      padding: "0.75rem 1rem",
+                      color: "#9a8f7a",
+                      fontSize: "0.85rem",
+                      outline: "none",
+                    }}
                     accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
                     required
                   />
-                  <p className="text-xs text-gray-400 mt-1">קבצים מותרים: PDF, תמונות, Word</p>
+                  <p style={{ fontSize: "0.72rem", color: "#4a4440", marginTop: "0.4rem" }}>
+                    קבצים מותרים: PDF, תמונות, Word
+                  </p>
                 </div>
 
                 {uploadStatus.type !== "idle" && (
-                  <div
-                    className={`rounded-lg px-4 py-3 text-sm ${
-                      uploadStatus.type === "success"
-                        ? "bg-green-50 text-green-700 border border-green-200"
-                        : uploadStatus.type === "error"
-                        ? "bg-red-50 text-red-700 border border-red-200"
-                        : "bg-blue-50 text-blue-700 border border-blue-200"
-                    }`}
-                  >
+                  <div style={{
+                    padding: "0.75rem 1rem",
+                    borderRadius: "3px",
+                    fontSize: "0.85rem",
+                    border: "1px solid",
+                    ...(uploadStatus.type === "success"
+                      ? { background: "rgba(34,197,94,0.08)", color: "#4ade80", borderColor: "rgba(34,197,94,0.25)" }
+                      : uploadStatus.type === "error"
+                      ? { background: "rgba(239,68,68,0.08)", color: "#f87171", borderColor: "rgba(239,68,68,0.25)" }
+                      : { background: "rgba(201,168,76,0.08)", color: "#c9a84c", borderColor: "rgba(201,168,76,0.25)" }),
+                  }}>
                     {uploadStatus.message}
                   </div>
                 )}
@@ -222,7 +446,18 @@ export default function Home() {
                 <button
                   type="submit"
                   disabled={uploadStatus.type === "loading"}
-                  className="w-full bg-blue-700 hover:bg-blue-800 disabled:bg-blue-300 text-white font-medium py-3 rounded-lg transition-colors"
+                  style={{
+                    background: uploadStatus.type === "loading" ? "rgba(201,168,76,0.3)" : "#c9a84c",
+                    border: "none",
+                    borderRadius: "3px",
+                    padding: "0.85rem",
+                    color: "#111",
+                    fontWeight: 700,
+                    fontSize: "0.9rem",
+                    cursor: uploadStatus.type === "loading" ? "not-allowed" : "pointer",
+                    letterSpacing: "0.05em",
+                    transition: "background 0.2s",
+                  }}
                 >
                   {uploadStatus.type === "loading" ? "מעלה..." : "העלה קובץ"}
                 </button>
@@ -234,20 +469,103 @@ export default function Home() {
         {/* תשלום */}
         {activeTab === "payment" && (
           <div>
-            <h2 className="text-2xl font-bold text-blue-900 mb-6">תשלום</h2>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
-              <div className="text-6xl mb-4">💳</div>
-              <h3 className="text-xl font-semibold text-gray-700 mb-2">מערכת התשלום</h3>
-              <p className="text-gray-400">קישור לתשלום יפורסם בקרוב</p>
+            <SectionTitle>תשלום</SectionTitle>
+            <div style={{
+              background: "#1a1710",
+              border: "1px solid rgba(201,168,76,0.2)",
+              borderRadius: "4px",
+              padding: "4rem 2rem",
+              textAlign: "center",
+            }}>
+              <div style={{
+                width: "64px",
+                height: "64px",
+                borderRadius: "50%",
+                border: "1px solid rgba(201,168,76,0.3)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 1.5rem",
+                fontSize: "1.5rem",
+                color: "#c9a84c",
+              }}>
+                ◇
+              </div>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 600, color: "#f5f0e8", marginBottom: "0.5rem" }}>
+                מערכת התשלום
+              </h3>
+              <p style={{ color: "#4a4440", fontSize: "0.85rem" }}>קישור לתשלום יפורסם בקרוב</p>
             </div>
           </div>
         )}
 
       </main>
 
-      <footer className="text-center text-xs text-gray-400 py-6 mt-8">
-        מסע לפולין | לפרטים פנה למורה המלווה
+      {/* Footer */}
+      <footer style={{
+        borderTop: "1px solid rgba(201,168,76,0.1)",
+        padding: "1.5rem",
+        textAlign: "center",
+      }}>
+        <div style={{
+          fontSize: "0.7rem",
+          color: "#3a3530",
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
+        }}>
+          מסע לפולין &nbsp;·&nbsp; לפרטים פנה למורה המלווה
+        </div>
       </footer>
+    </div>
+  )
+}
+
+/* ─── Helpers ─── */
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ marginBottom: "1.75rem" }}>
+      <div style={{
+        fontSize: "0.65rem",
+        fontWeight: 600,
+        letterSpacing: "0.2em",
+        color: "#c9a84c",
+        textTransform: "uppercase",
+        marginBottom: "0.4rem",
+      }}>
+        מסע לפולין
+      </div>
+      <h2 style={{
+        fontSize: "1.6rem",
+        fontWeight: 900,
+        color: "#f5f0e8",
+        lineHeight: 1.2,
+        margin: 0,
+      }}>
+        {children}
+      </h2>
+      <div style={{
+        width: "40px",
+        height: "2px",
+        background: "#c9a84c",
+        marginTop: "0.75rem",
+        borderRadius: "1px",
+      }} />
+    </div>
+  )
+}
+
+function EmptyState({ icon, text }: { icon: string; text: string }) {
+  return (
+    <div style={{
+      background: "#1a1710",
+      border: "1px solid rgba(201,168,76,0.15)",
+      borderRadius: "4px",
+      padding: "4rem 2rem",
+      textAlign: "center",
+    }}>
+      <div style={{ fontSize: "2rem", color: "rgba(201,168,76,0.3)", marginBottom: "1rem" }}>{icon}</div>
+      <p style={{ color: "#4a4440", fontSize: "0.9rem" }}>{text}</p>
     </div>
   )
 }
