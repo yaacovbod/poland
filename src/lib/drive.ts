@@ -48,14 +48,26 @@ async function driveMultipart(
   fileId?: string
 ) {
   const boundary = "boundary_" + Date.now()
-  const metaPart = JSON.stringify(metadata)
-  const contentStr = typeof content === "string" ? content : content.toString("base64")
-  const encoding = typeof content === "string" ? "utf-8" : "base64"
+  const enc = new TextEncoder()
 
-  const body =
-    `--${boundary}\r\nContent-Type: application/json\r\n\r\n${metaPart}\r\n` +
-    `--${boundary}\r\nContent-Type: ${mimeType}\r\nContent-Transfer-Encoding: ${encoding}\r\n\r\n${contentStr}\r\n` +
-    `--${boundary}--`
+  const part1 = enc.encode(
+    `--${boundary}\r\nContent-Type: application/json\r\n\r\n${JSON.stringify(metadata)}\r\n`
+  )
+  const part2Header = enc.encode(`--${boundary}\r\nContent-Type: ${mimeType}\r\n\r\n`)
+  const contentBytes =
+    typeof content === "string"
+      ? enc.encode(content)
+      : new Uint8Array(content.buffer, content.byteOffset, content.byteLength)
+  const closing = enc.encode(`\r\n--${boundary}--`)
+
+  const total = new Uint8Array(
+    part1.length + part2Header.length + contentBytes.length + closing.length
+  )
+  let off = 0
+  total.set(part1, off); off += part1.length
+  total.set(part2Header, off); off += part2Header.length
+  total.set(contentBytes, off); off += contentBytes.length
+  total.set(closing, off)
 
   const url = fileId
     ? `${DRIVE_UPLOAD}/files/${fileId}?uploadType=multipart`
@@ -67,9 +79,11 @@ async function driveMultipart(
       Authorization: `Bearer ${token}`,
       "Content-Type": `multipart/related; boundary=${boundary}`,
     },
-    body,
+    body: total,
   })
-  return res.json()
+  const data = await res.json()
+  if (!res.ok) throw new Error("Drive multipart failed: " + JSON.stringify(data))
+  return data
 }
 
 // ── Config folder ─────────────────────────────────────────────────────────
@@ -113,7 +127,8 @@ export async function readConfigFile<T>(filename: string, fallback: T): Promise<
     })
     const text = await res.text()
     return JSON.parse(text) as T
-  } catch {
+  } catch (err) {
+    console.error("readConfigFile error:", err)
     return fallback
   }
 }
