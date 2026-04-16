@@ -309,55 +309,52 @@ export default function Home() {
         position: "relative",
         overflow: "hidden",
       }}>
-        {/* Watermark */}
-        <div style={{
-          position: "absolute",
-          inset: 0,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "clamp(3.5rem, 10vw, 6.5rem)",
-          fontWeight: 700,
-          fontFamily: "var(--font-amatic), sans-serif",
-          color: "rgba(14,77,110,0.1)",
-          letterSpacing: "0.05em",
-          userSelect: "none",
-          pointerEvents: "none",
-          lineHeight: 1,
-          whiteSpace: "nowrap",
-        }}>
-          את אחיי אנוכי מבקש
-        </div>
-
         <div style={{ maxWidth: "720px", margin: "0 auto", padding: "0 1.5rem", textAlign: "center", position: "relative" }}>
-          <div style={{ marginBottom: "1.5rem" }}>
-            <div style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.75rem",
-              fontSize: "0.7rem",
-              letterSpacing: "0.25em",
-              color: T.rose,
-              textTransform: "uppercase",
-              fontWeight: 600,
-            }}>
-              <span style={{ display: "block", width: "40px", height: "1px", background: `linear-gradient(to right, transparent, ${T.rose})` }} />
-              מסע זיכרון
-              <span style={{ display: "block", width: "40px", height: "1px", background: `linear-gradient(to left, transparent, ${T.rose})` }} />
-            </div>
-          </div>
 
-          <h1 style={{
-            fontSize: "clamp(2.2rem, 6vw, 4rem)",
-            fontWeight: 400,
-            lineHeight: 1.1,
-            marginBottom: "0.75rem",
-            color: T.text,
-            fontFamily: "var(--font-rubik-dirt), sans-serif",
-            letterSpacing: "0.01em",
+          {/* ציטוט במקום "מסע זיכרון" */}
+          <p style={{
+            fontFamily: "var(--font-rubik), sans-serif",
+            fontSize: "0.9rem",
+            color: T.rose,
+            letterSpacing: "0.08em",
+            marginBottom: "1.25rem",
+            marginTop: 0,
           }}>
-            מסע לפולין
-          </h1>
+            את אחיי אנוכי מבקש
+          </p>
+
+          {/* כותרת עם לוגו מאחורה */}
+          <div style={{ position: "relative", display: "inline-block" }}>
+            <img
+              src="/logo.webp"
+              alt=""
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                height: "160%",
+                width: "auto",
+                opacity: 0.07,
+                objectFit: "contain",
+                pointerEvents: "none",
+                userSelect: "none",
+              }}
+            />
+            <h1 style={{
+              fontSize: "clamp(2.2rem, 6vw, 4rem)",
+              fontWeight: 400,
+              lineHeight: 1.1,
+              marginBottom: 0,
+              color: T.text,
+              fontFamily: "var(--font-rubik-dirt), sans-serif",
+              letterSpacing: "0.01em",
+              position: "relative",
+            }}>
+              מסע לפולין
+            </h1>
+          </div>
 
           <div style={{
             width: "60px",
