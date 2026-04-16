@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-heebo);
+  --font-sans: var(--font-rubik);
 }
 
 body {
   background: #f0f5f9;
   color: #0d2d3d;
-  font-family: var(--font-heebo), 'Heebo', sans-serif;
+  font-family: var(--font-rubik), 'Rubik', sans-serif;
 }
 
 ::-webkit-scrollbar {

@@ -347,11 +347,12 @@ export default function Home() {
 
           <h1 style={{
             fontSize: "clamp(2.2rem, 6vw, 4rem)",
-            fontWeight: 900,
+            fontWeight: 400,
             lineHeight: 1.1,
             marginBottom: "0.75rem",
             color: T.text,
-            letterSpacing: "-0.02em",
+            fontFamily: "var(--font-rubik-dirt), sans-serif",
+            letterSpacing: "0.01em",
           }}>
             מסע לפולין
           </h1>

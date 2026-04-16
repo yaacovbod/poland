@@ -1,10 +1,16 @@
 import type { Metadata } from "next"
-import { Heebo } from "next/font/google"
+import { Rubik, Rubik_Dirt } from "next/font/google"
 import "./globals.css"
 
-const heebo = Heebo({
+const rubik = Rubik({
   subsets: ["hebrew", "latin"],
-  variable: "--font-heebo",
+  variable: "--font-rubik",
+})
+
+const rubikDirt = Rubik_Dirt({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-rubik-dirt",
 })
 
 export const metadata: Metadata = {
@@ -18,8 +24,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="he" dir="rtl" className={heebo.variable}>
-      <body className="min-h-screen font-sans antialiased">{children}</body>
+    <html lang="he" dir="rtl" className={`${rubik.variable} ${rubikDirt.variable}`}>
+      <body className="min-h-screen antialiased">{children}</body>
     </html>
   )
 }
