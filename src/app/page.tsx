@@ -352,7 +352,7 @@ export default function Home() {
               letterSpacing: "0.01em",
               position: "relative",
             }}>
-              מסע לפולין
+              המסע לפולין
             </h1>
           </div>
 

@@ -20,8 +20,8 @@ const amaticSC = Amatic_SC({
 })
 
 export const metadata: Metadata = {
-  title: "מסע לפולין",
-  description: "פורטל מידע לתלמידים והורים - מסע לפולין",
+  title: "המסע לפולין",
+  description: "פורטל מידע לתלמידים והורים - המסע לפולין",
 }
 
 export default function RootLayout({
