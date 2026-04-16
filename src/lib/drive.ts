@@ -37,7 +37,9 @@ async function drivePost(path: string, token: string, body: unknown) {
     headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
     body: JSON.stringify(body),
   })
-  return res.json()
+  const data = await res.json()
+  if (!res.ok) throw new Error("Drive POST failed: " + JSON.stringify(data))
+  return data
 }
 
 async function driveMultipart(
@@ -167,6 +169,7 @@ export async function getOrCreateStudentFolder(
     mimeType: "application/vnd.google-apps.folder",
     parents: [ROOT_FOLDER_ID],
   })
+  if (!folder.id) throw new Error("Folder created but no ID returned: " + JSON.stringify(folder))
   return folder.id
 }
 

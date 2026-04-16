@@ -1,17 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getOrCreateStudentFolder, uploadFileToStudentFolder } from "@/lib/drive"
-import { readFileSync } from "fs"
-import path from "path"
-
-function getStudents(): Record<string, string> {
-  try {
-    const filePath = path.join(process.cwd(), "data", "students.json")
-    const raw = readFileSync(filePath, "utf-8")
-    return JSON.parse(raw)
-  } catch {
-    return {}
-  }
-}
+import { readConfigFile, getOrCreateStudentFolder, uploadFileToStudentFolder } from "@/lib/drive"
+import studentsJson from "../../../../data/students.json"
 
 export async function POST(req: NextRequest) {
   try {
@@ -23,7 +12,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "חסרים פרטים" }, { status: 400 })
     }
 
-    const students = getStudents()
+    const students = await readConfigFile<Record<string, string>>("students.json", studentsJson)
     const studentName = students[studentId]
 
     if (!studentName) {
@@ -35,6 +24,9 @@ export async function POST(req: NextRequest) {
 
     const buffer = Buffer.from(await file.arrayBuffer())
     const folderId = await getOrCreateStudentFolder(studentId, studentName)
+    if (!folderId) {
+      return NextResponse.json({ error: "שגיאה ביצירת תיקייה בדרייב" }, { status: 500 })
+    }
     const fileLink = await uploadFileToStudentFolder(
       folderId,
       file.name,
@@ -49,6 +41,7 @@ export async function POST(req: NextRequest) {
     })
   } catch (err) {
     console.error("Upload error:", err)
-    return NextResponse.json({ error: "שגיאה בהעלאת הקובץ" }, { status: 500 })
+    const msg = err instanceof Error ? err.message : String(err)
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }
