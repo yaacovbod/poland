@@ -316,15 +316,17 @@ export default function Home() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: "12rem",
-          fontWeight: 900,
-          color: "rgba(181,101,118,0.07)",
-          letterSpacing: "-0.05em",
+          fontSize: "clamp(3.5rem, 10vw, 6.5rem)",
+          fontWeight: 700,
+          fontFamily: "var(--font-amatic), sans-serif",
+          color: "rgba(14,77,110,0.1)",
+          letterSpacing: "0.05em",
           userSelect: "none",
           pointerEvents: "none",
           lineHeight: 1,
+          whiteSpace: "nowrap",
         }}>
-          POLAND
+          את אחיי אנוכי מבקש
         </div>
 
         <div style={{ maxWidth: "720px", margin: "0 auto", padding: "0 1.5rem", textAlign: "center", position: "relative" }}>
