@@ -1,4 +1,5 @@
 import { google } from "googleapis"
+import { Readable } from "stream"
 
 function getAuth() {
   return new google.auth.OAuth2(
@@ -65,7 +66,6 @@ export async function readConfigFile<T>(filename: string, fallback: T): Promise<
 
 export async function writeConfigFile<T>(filename: string, data: T): Promise<void> {
   const drive = getDriveClient()
-  const { Readable } = await import("stream")
   const configFolderId = await getConfigFolderId()
   const existingId = await getConfigFileId(configFolderId, filename)
   const content = JSON.stringify(data, null, 2)
@@ -116,7 +116,6 @@ export async function uploadFileToStudentFolder(
   buffer: Buffer
 ): Promise<string> {
   const drive = getDriveClient()
-  const { Readable } = await import("stream")
 
   const file = await drive.files.create({
     requestBody: { name: fileName, parents: [folderId] },
@@ -130,7 +129,6 @@ export async function uploadFileToStudentFolder(
 
 export async function uploadPdfToDrive(filename: string, buffer: Buffer): Promise<string> {
   const drive = getDriveClient()
-  const { Readable } = await import("stream")
   const configFolderId = await getConfigFolderId()
 
   const file = await drive.files.create({
