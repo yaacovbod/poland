@@ -37,3 +37,20 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 6px 24px rgba(14, 77, 110, 0.12);
 }
+
+@media (max-width: 600px) {
+  nav > div button {
+    font-size: 0.62rem;
+    padding: 0.75rem 0.25rem;
+    gap: 0.15rem;
+  }
+  nav > div button span:first-child {
+    font-size: 0.85rem;
+  }
+  main {
+    padding: 1.5rem 1rem !important;
+  }
+  header > div {
+    padding: 0 1rem !important;
+  }
+}
