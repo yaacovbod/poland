@@ -1,6 +1,46 @@
 import { NextRequest, NextResponse } from "next/server"
 import { readConfigFile, getOrCreateStudentFolder, uploadFileToStudentFolder } from "@/lib/drive"
 import studentsJson from "../../../../data/students.json"
+import { Resend } from "resend"
+
+const NOTIFY_EMAILS = [
+  "1002823504@edu-haifa.org.il",
+  "1003756071@edu-haifa.org.il",
+]
+
+async function sendUploadNotification(studentName: string, fileName: string, driveLink: string) {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) return
+
+  const resend = new Resend(apiKey)
+
+  await resend.emails.send({
+    from: "poland-trip@resend.dev",
+    to: NOTIFY_EMAILS,
+    subject: `העלאת קובץ חדשה — ${studentName}`,
+    html: `
+      <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 24px; color: #0d2d3d;">
+        <h2 style="color: #1a6b8a; margin-bottom: 16px;">הועלה קובץ חדש</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 8px 12px; background: #e3edf5; font-weight: bold; border-radius: 6px 0 0 0;">תלמיד</td>
+            <td style="padding: 8px 12px; background: #f0f5f9; border-radius: 0 6px 0 0;">${studentName}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 12px; background: #e3edf5; font-weight: bold;">שם קובץ</td>
+            <td style="padding: 8px 12px; background: #f0f5f9;">${fileName}</td>
+          </tr>
+        </table>
+        <div style="margin-top: 20px;">
+          <a href="${driveLink}" style="display: inline-block; background: #1a6b8a; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold;">
+            פתח בדרייב
+          </a>
+        </div>
+        <p style="margin-top: 24px; font-size: 0.8rem; color: #7aaabb;">מסע לפולין — פורטל נעימת הלב</p>
+      </div>
+    `,
+  })
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -33,6 +73,10 @@ export async function POST(req: NextRequest) {
       file.type || "application/octet-stream",
       buffer
     )
+
+    sendUploadNotification(studentName, file.name, fileLink ?? "").catch((err) => {
+      console.error("Email notification failed:", err)
+    })
 
     return NextResponse.json({
       success: true,
