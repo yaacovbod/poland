@@ -438,7 +438,7 @@ export default function Home() {
                   return (
                     <div key={bi} style={{
                       border: `1px solid ${T.border}`,
-                      borderRadius: "6px",
+                      borderRadius: "16px",
                       overflow: "hidden",
                       background: T.surface,
                       boxShadow: "0 1px 4px rgba(181,101,118,0.08)",
@@ -468,7 +468,7 @@ export default function Home() {
                   <div key={bi} className="memory-card" style={{
                     background: T.surface,
                     border: `1px solid ${T.border}`,
-                    borderRadius: "6px",
+                    borderRadius: "16px",
                     overflow: "hidden",
                     boxShadow: "0 1px 4px rgba(181,101,118,0.06)",
                   }}>
@@ -520,7 +520,7 @@ export default function Home() {
                     style={{
                       background: T.surface,
                       border: `1px solid ${T.border}`,
-                      borderRadius: "6px",
+                      borderRadius: "16px",
                       padding: "1rem 1.25rem",
                       display: "flex",
                       alignItems: "center",
@@ -534,7 +534,7 @@ export default function Home() {
                         width: "36px",
                         height: "36px",
                         border: `1px solid ${T.border}`,
-                        borderRadius: "6px",
+                        borderRadius: "16px",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -561,7 +561,7 @@ export default function Home() {
                         fontSize: "0.78rem",
                         fontWeight: 600,
                         padding: "0.45rem 1rem",
-                        borderRadius: "4px",
+                        borderRadius: "10px",
                         textDecoration: "none",
                         letterSpacing: "0.05em",
                         transition: "all 0.2s",
@@ -596,7 +596,7 @@ export default function Home() {
             <div style={{
               background: T.surface,
               border: `1px solid ${T.border}`,
-              borderRadius: "6px",
+              borderRadius: "16px",
               padding: "2rem",
               maxWidth: "480px",
               boxShadow: "0 1px 4px rgba(181,101,118,0.06)",
@@ -622,7 +622,7 @@ export default function Home() {
                       width: "100%",
                       background: T.bgDeep,
                       border: `1px solid ${T.border}`,
-                      borderRadius: "4px",
+                      borderRadius: "10px",
                       padding: "0.75rem 1rem",
                       color: T.text,
                       fontSize: "0.9rem",
@@ -658,7 +658,7 @@ export default function Home() {
                       width: "100%",
                       background: T.bgDeep,
                       border: `1px solid ${T.border}`,
-                      borderRadius: "4px",
+                      borderRadius: "10px",
                       padding: "0.75rem 1rem",
                       color: T.muted,
                       fontSize: "0.85rem",
@@ -692,7 +692,7 @@ export default function Home() {
                         width: "100%",
                         background: T.bgDeep,
                         border: `1px solid ${T.border}`,
-                        borderRadius: "4px",
+                        borderRadius: "10px",
                         padding: "0.75rem 1rem",
                         color: T.text,
                         fontSize: "0.9rem",
@@ -714,7 +714,7 @@ export default function Home() {
                 {uploadStatus.type !== "idle" && (
                   <div style={{
                     padding: "0.75rem 1rem",
-                    borderRadius: "4px",
+                    borderRadius: "10px",
                     fontSize: "0.85rem",
                     border: "1px solid",
                     ...(uploadStatus.type === "success"
@@ -733,7 +733,7 @@ export default function Home() {
                   style={{
                     background: uploadStatus.type === "loading" ? T.veryDim : T.rose,
                     border: "none",
-                    borderRadius: "4px",
+                    borderRadius: "10px",
                     padding: "0.85rem",
                     color: "#fff",
                     fontWeight: 700,
@@ -758,7 +758,7 @@ export default function Home() {
             <div style={{
               background: T.surface,
               border: `1px solid ${T.border}`,
-              borderRadius: "6px",
+              borderRadius: "16px",
               padding: "4rem 2rem",
               textAlign: "center",
               boxShadow: "0 1px 4px rgba(181,101,118,0.06)",
@@ -833,7 +833,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
         height: "2px",
         background: T.rose,
         marginTop: "0.75rem",
-        borderRadius: "1px",
+        borderRadius: "2px",
       }} />
     </div>
   )
@@ -844,7 +844,7 @@ function PrepSessionCard({ session, nested }: { session: PrepSession; nested?: b
     <div className={nested ? "" : "memory-card"} style={{
       background: nested ? "transparent" : T.surface,
       border: nested ? "none" : `1px solid ${T.border}`,
-      borderRadius: nested ? 0 : "6px",
+      borderRadius: nested ? 0 : "16px",
       overflow: "hidden",
       boxShadow: nested ? "none" : "0 1px 4px rgba(181,101,118,0.06)",
     }}>
@@ -861,7 +861,7 @@ function PrepSessionCard({ session, nested }: { session: PrepSession; nested?: b
           <span style={{
             background: T.rosePale,
             border: `1px solid ${T.border}`,
-            borderRadius: "3px",
+            borderRadius: "8px",
             padding: "0.1rem 0.45rem",
             fontSize: "0.65rem",
             fontWeight: 700,
@@ -898,7 +898,7 @@ function EmptyState({ icon, text }: { icon: string; text: string }) {
     <div style={{
       background: T.surface,
       border: `1px solid ${T.border}`,
-      borderRadius: "6px",
+      borderRadius: "16px",
       padding: "4rem 2rem",
       textAlign: "center",
       boxShadow: "0 1px 4px rgba(181,101,118,0.06)",
