@@ -309,7 +309,7 @@ export default function Home() {
         position: "relative",
         overflow: "hidden",
       }}>
-        <div style={{ maxWidth: "720px", margin: "0 auto", padding: "0 1.5rem", textAlign: "center", position: "relative" }}>
+        <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 1.5rem", textAlign: "center", position: "relative" }}>
 
           {/* ציטוט במקום "מסע זיכרון" */}
           <p style={{
@@ -378,7 +378,7 @@ export default function Home() {
         top: 0,
         zIndex: 50,
       }}>
-        <div style={{ maxWidth: "720px", margin: "0 auto", display: "flex" }}>
+        <div style={{ maxWidth: "1000px", margin: "0 auto", display: "flex" }}>
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -410,7 +410,7 @@ export default function Home() {
       </nav>
 
       {/* Main Content */}
-      <main style={{ maxWidth: "720px", margin: "0 auto", padding: "2.5rem 1.5rem" }} className="tab-content">
+      <main style={{ maxWidth: "1000px", margin: "0 auto", padding: "2.5rem 1.5rem" }} className="tab-content">
 
         {/* לו"ז */}
         {activeTab === "schedule" && (
