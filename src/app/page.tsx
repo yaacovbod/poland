@@ -22,7 +22,7 @@ const T = {
   veryDim: "#b0ccd8",
 }
 
-type Tab = "schedule" | "download" | "upload" | "payment" | "prep"
+type Tab = "general" | "schedule" | "download" | "upload" | "payment" | "prep"
 
 /* ─── נתוני הכנה למסע ─── */
 type Topic = { title: string; desc: string }
@@ -252,7 +252,7 @@ const PREP: PrepBlock[] = [
 ]
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<Tab>("prep")
+  const [activeTab, setActiveTab] = useState<Tab>("general")
   const [pdfs, setPdfs] = useState<PdfItem[]>([])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_schedule, _setSchedule] = useState<ScheduleDay[]>([])
@@ -295,6 +295,7 @@ export default function Home() {
   }
 
   const tabs: { id: Tab; label: string; icon: string }[] = [
+    { id: "general", label: "כללי", icon: "◯" },
     { id: "prep", label: "הכנה למסע", icon: "◐" },
     { id: "schedule", label: 'לו"ז המסע', icon: "◈" },
     { id: "download", label: "הורדת טפסים", icon: "◎" },
@@ -416,6 +417,110 @@ export default function Home() {
 
       {/* Main Content */}
       <main style={{ maxWidth: "1000px", margin: "0 auto", padding: "2.5rem 1.5rem" }} className="tab-content">
+
+        {/* כללי */}
+        {activeTab === "general" && (
+          <div>
+            <SectionTitle>ברוכים הבאים לפורטל המסע</SectionTitle>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+
+              {/* כרטיס ברכה */}
+              <div style={{
+                background: T.surface,
+                border: `1px solid ${T.border}`,
+                borderRadius: "16px",
+                padding: "1.5rem",
+                boxShadow: "0 1px 4px rgba(14,77,110,0.06)",
+                lineHeight: 1.8,
+                fontSize: "0.92rem",
+                color: T.muted,
+              }}>
+                <p style={{ margin: "0 0 0.5rem", color: T.text, fontWeight: 700, fontSize: "1rem" }}>שלום להורים ולתלמידים,</p>
+                <p style={{ margin: 0 }}>
+                  אתר זה הוא הפורטל הרשמי למסע לפולין של נעימת הלב. כאן תמצאו את כל המידע, הטפסים והעדכונים הרלוונטיים לקראת המסע ובמהלכו.
+                </p>
+              </div>
+
+              {/* מה יש באתר */}
+              {[
+                {
+                  icon: "◐",
+                  title: "הכנה למסע",
+                  desc: "תוכנית ההכנות המלאה לפני היציאה לפולין. כל מפגש מפורט עם תאריך, שעה, מוביל ותכנים. ניתן להוסיף כל מפגש ישירות ליומן גוגל או לאפל קלנדר.",
+                },
+                {
+                  icon: "◈",
+                  title: 'לו"ז המסע',
+                  desc: 'תאריכי המסע: 12/10/2026 עד 18/10/2026. לו"ז המסע המלא יתפרסם בהמשך.',
+                },
+                {
+                  icon: "◎",
+                  title: "הורדת טפסים",
+                  desc: "כאן יועלו כל הטפסים הדרושים לחתימה ולמילוי לפני המסע. כשהטפסים יהיו מוכנים תוכלו להוריד אותם ישירות מהאתר.",
+                },
+                {
+                  icon: "◉",
+                  title: "העלאת טפסים",
+                  desc: "לאחר מילוי הטפסים וחתימתם, יש להעלות אותם דרך הטופס באתר. ההעלאה מתבצעת עם מספר תעודת הזהות של הילד/ה.",
+                },
+                {
+                  icon: "◇",
+                  title: "תשלום",
+                  desc: "קישור לתשלום עמלת המסע יפורסם בקרוב.",
+                },
+              ].map((item, i) => (
+                <div key={i} style={{
+                  background: T.surface,
+                  border: `1px solid ${T.border}`,
+                  borderRadius: "16px",
+                  padding: "1rem 1.25rem",
+                  display: "flex",
+                  gap: "1rem",
+                  alignItems: "flex-start",
+                  boxShadow: "0 1px 4px rgba(14,77,110,0.06)",
+                }}>
+                  <div style={{
+                    width: "38px",
+                    height: "38px",
+                    borderRadius: "12px",
+                    border: `1px solid ${T.border}`,
+                    background: T.rosePale,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "1rem",
+                    color: T.rose,
+                    flexShrink: 0,
+                  }}>{item.icon}</div>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: "0.92rem", color: T.text, marginBottom: "0.25rem" }}>{item.title}</div>
+                    <div style={{ fontSize: "0.83rem", color: T.muted, lineHeight: 1.6 }}>{item.desc}</div>
+                  </div>
+                </div>
+              ))}
+
+              {/* הערת כתובת זמנית */}
+              <div style={{
+                background: T.bgDeep,
+                border: `1px dashed ${T.border}`,
+                borderRadius: "12px",
+                padding: "0.9rem 1.25rem",
+                fontSize: "0.8rem",
+                color: T.muted,
+                display: "flex",
+                gap: "0.5rem",
+                alignItems: "flex-start",
+                lineHeight: 1.6,
+              }}>
+                <span style={{ color: T.roseMid, flexShrink: 0 }}>◎</span>
+                <span>
+                  <strong style={{ color: T.text }}>שימו לב:</strong> כתובת האתר הנוכחית היא זמנית. הכתובת הקבועה תישלח בהמשך.
+                </span>
+              </div>
+
+            </div>
+          </div>
+        )}
 
         {/* לו"ז */}
         {activeTab === "schedule" && (
