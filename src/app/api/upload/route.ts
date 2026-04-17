@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { readConfigFile, getOrCreateStudentFolder, uploadFileToStudentFolder } from "@/lib/drive"
 import studentsJson from "../../../../data/students.json"
-import { Resend } from "resend"
+import nodemailer from "nodemailer"
 
 const NOTIFY_EMAILS = [
   "1002823504@edu-haifa.org.il",
@@ -9,22 +9,26 @@ const NOTIFY_EMAILS = [
 ]
 
 async function sendUploadNotification(studentName: string, fileName: string, driveLink: string) {
-  const apiKey = process.env.RESEND_API_KEY
-  if (!apiKey) return
+  const user = process.env.GMAIL_USER
+  const pass = process.env.GMAIL_APP_PASSWORD
+  if (!user || !pass) return
 
-  const resend = new Resend(apiKey)
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: { user, pass },
+  })
 
-  await resend.emails.send({
-    from: "onboarding@resend.dev",
-    to: NOTIFY_EMAILS,
+  await transporter.sendMail({
+    from: `"מסע לפולין" <${user}>`,
+    to: NOTIFY_EMAILS.join(", "),
     subject: `העלאת קובץ חדשה — ${studentName}`,
     html: `
       <div dir="rtl" style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 24px; color: #0d2d3d;">
         <h2 style="color: #1a6b8a; margin-bottom: 16px;">הועלה קובץ חדש</h2>
         <table style="width: 100%; border-collapse: collapse;">
           <tr>
-            <td style="padding: 8px 12px; background: #e3edf5; font-weight: bold; border-radius: 6px 0 0 0;">תלמיד</td>
-            <td style="padding: 8px 12px; background: #f0f5f9; border-radius: 0 6px 0 0;">${studentName}</td>
+            <td style="padding: 8px 12px; background: #e3edf5; font-weight: bold;">תלמיד</td>
+            <td style="padding: 8px 12px; background: #f0f5f9;">${studentName}</td>
           </tr>
           <tr>
             <td style="padding: 8px 12px; background: #e3edf5; font-weight: bold;">שם קובץ</td>
