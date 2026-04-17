@@ -299,7 +299,7 @@ export default function Home() {
     { id: "prep", label: "הכנה למסע", icon: "◐" },
     { id: "schedule", label: 'לו"ז המסע', icon: "◈" },
     { id: "download", label: "הורדת טפסים", icon: "◎" },
-    { id: "upload", label: "העלאת טפסים", icon: "◉" },
+    { id: "upload", label: "העלאת קבצים", icon: "◉" },
     { id: "payment", label: "תשלום", icon: "◇" },
   ]
 
@@ -460,8 +460,8 @@ export default function Home() {
                 },
                 {
                   icon: "◉",
-                  title: "העלאת טפסים",
-                  desc: "לאחר מילוי הטפסים וחתימתם, יש להעלות אותם דרך הטופס באתר. ההעלאה מתבצעת עם מספר תעודת הזהות של הילד/ה.",
+                  title: "העלאת קבצים",
+                  desc: "ניתן להעלות קבצים רלוונטיים למסע דרך האתר. ההעלאה מתבצעת עם מספר תעודת הזהות של הילד/ה.",
                 },
                 {
                   icon: "◇",
@@ -776,10 +776,10 @@ export default function Home() {
           </div>
         )}
 
-        {/* העלאת טפסים */}
+        {/* העלאת קבצים */}
         {activeTab === "upload" && (
           <div>
-            <SectionTitle>העלאת טפסים</SectionTitle>
+            <SectionTitle>העלאת קבצים</SectionTitle>
             <p style={{ color: T.muted, fontSize: "0.85rem", marginBottom: "2rem", lineHeight: 1.7 }}>
               הכנס את מספר תעודת הזהות שלך ובחר את הקובץ להעלאה. הקובץ יישמר בתיקייה האישית שלך.
             </p>
