@@ -966,11 +966,15 @@ function CalendarButtons({ title, date, time, topics }: { title: string; date: s
         onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
         onMouseLeave={e => (e.currentTarget.style.opacity = "0.7")}
       >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <rect x="0.5" y="0.5" width="23" height="23" rx="4" fill="white" stroke="#dadce0"/>
-          <rect x="0" y="0" width="24" height="7" rx="3" fill="#1a73e8"/>
-          <rect x="0" y="4" width="24" height="3" fill="#1a73e8"/>
-          <text x="12" y="19" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#1a73e8" fontFamily="sans-serif">31</text>
+        {/* Google Calendar icon */}
+        <svg width="22" height="22" viewBox="0 0 48 48" fill="none">
+          <rect width="48" height="48" rx="8" fill="white"/>
+          <rect x="6" y="14" width="36" height="28" rx="3" fill="white" stroke="#dadce0" strokeWidth="1.5"/>
+          <rect x="6" y="14" width="36" height="10" rx="3" fill="#1a73e8"/>
+          <rect x="6" y="20" width="36" height="4" fill="#1a73e8"/>
+          <rect x="15" y="9" width="3" height="10" rx="1.5" fill="#1a73e8"/>
+          <rect x="30" y="9" width="3" height="10" rx="1.5" fill="#1a73e8"/>
+          <text x="24" y="37" textAnchor="middle" fontSize="14" fontWeight="800" fill="#1a73e8" fontFamily="Arial,sans-serif">31</text>
         </svg>
       </a>
       <button
@@ -980,11 +984,16 @@ function CalendarButtons({ title, date, time, topics }: { title: string; date: s
         onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
         onMouseLeave={e => (e.currentTarget.style.opacity = "0.7")}
       >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <rect x="0.5" y="0.5" width="23" height="23" rx="4" fill="white" stroke="#e0e0e0"/>
-          <rect x="0" y="0" width="24" height="7" rx="3" fill="#e53935"/>
-          <rect x="0" y="4" width="24" height="3" fill="#e53935"/>
-          <text x="12" y="19" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#e53935" fontFamily="sans-serif">31</text>
+        {/* Apple Calendar icon */}
+        <svg width="22" height="22" viewBox="0 0 48 48" fill="none">
+          <rect width="48" height="48" rx="8" fill="white"/>
+          <rect x="6" y="14" width="36" height="28" rx="3" fill="white" stroke="#e8e8e8" strokeWidth="1.5"/>
+          <rect x="6" y="14" width="36" height="10" rx="3" fill="#FF3B30"/>
+          <rect x="6" y="20" width="36" height="4" fill="#FF3B30"/>
+          <rect x="15" y="9" width="3" height="10" rx="1.5" fill="#FF3B30"/>
+          <rect x="30" y="9" width="3" height="10" rx="1.5" fill="#FF3B30"/>
+          <text x="24" y="33" textAnchor="middle" fontSize="8" fontWeight="600" fill="#555" fontFamily="Arial,sans-serif">SUN</text>
+          <text x="24" y="41" textAnchor="middle" fontSize="12" fontWeight="800" fill="#1a1a1a" fontFamily="Arial,sans-serif">31</text>
         </svg>
       </button>
     </div>
