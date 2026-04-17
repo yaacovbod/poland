@@ -420,8 +420,90 @@ export default function Home() {
         {/* לו"ז */}
         {activeTab === "schedule" && (
           <div>
-            <SectionTitle>לוח זמנים</SectionTitle>
-            <EmptyState icon="◈" text='לו"ז המסע יתפרסם בקרוב' />
+            <SectionTitle>לו&quot;ז המסע</SectionTitle>
+            <div style={{
+              background: T.surface,
+              border: `1px solid ${T.border}`,
+              borderRadius: "16px",
+              overflow: "hidden",
+              boxShadow: "0 1px 4px rgba(14,77,110,0.06)",
+              marginBottom: "1.5rem",
+            }}>
+              <div style={{
+                background: T.rosePale,
+                borderBottom: `1px solid ${T.border}`,
+                padding: "1rem 1.5rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.75rem",
+              }}>
+                <span style={{ fontSize: "1.1rem", color: T.rose }}>◈</span>
+                <span style={{ fontWeight: 800, fontSize: "1rem", color: T.text }}>מסע לפולין</span>
+              </div>
+              <div style={{ padding: "1.5rem" }}>
+                <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "1.25rem" }}>
+                  <div style={{
+                    background: T.bgDeep,
+                    border: `1px solid ${T.border}`,
+                    borderRadius: "12px",
+                    padding: "0.75rem 1.25rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.2rem",
+                  }}>
+                    <span style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.15em", color: T.roseMid, textTransform: "uppercase" }}>יציאה</span>
+                    <span style={{ fontSize: "1.1rem", fontWeight: 800, color: T.text }}>12/10/2026</span>
+                    <span style={{ fontSize: "0.75rem", color: T.muted }}>יום שני</span>
+                  </div>
+                  <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    color: T.veryDim,
+                    fontSize: "1.2rem",
+                  }}>←</div>
+                  <div style={{
+                    background: T.bgDeep,
+                    border: `1px solid ${T.border}`,
+                    borderRadius: "12px",
+                    padding: "0.75rem 1.25rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.2rem",
+                  }}>
+                    <span style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.15em", color: T.roseMid, textTransform: "uppercase" }}>חזרה</span>
+                    <span style={{ fontSize: "1.1rem", fontWeight: 800, color: T.text }}>18/10/2026</span>
+                    <span style={{ fontSize: "0.75rem", color: T.muted }}>יום ראשון</span>
+                  </div>
+                  <div style={{
+                    background: T.rosePale,
+                    border: `1px solid ${T.border}`,
+                    borderRadius: "12px",
+                    padding: "0.75rem 1.25rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.2rem",
+                    justifyContent: "center",
+                  }}>
+                    <span style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.15em", color: T.roseMid, textTransform: "uppercase" }}>משך</span>
+                    <span style={{ fontSize: "1.1rem", fontWeight: 800, color: T.rose }}>7 ימים</span>
+                  </div>
+                </div>
+                <div style={{
+                  padding: "0.85rem 1rem",
+                  background: T.bgDeep,
+                  borderRadius: "10px",
+                  border: `1px solid ${T.borderSub}`,
+                  fontSize: "0.85rem",
+                  color: T.muted,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}>
+                  <span style={{ color: T.roseMid, fontSize: "0.8rem" }}>◎</span>
+                  לו&quot;ז המסע המלא יתפרסם בהמשך
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
