@@ -78,9 +78,12 @@ export async function POST(req: NextRequest) {
       buffer
     )
 
-    sendUploadNotification(studentName, file.name, fileLink ?? "").catch((err) => {
+    try {
+      await sendUploadNotification(studentName, file.name, fileLink ?? "")
+      console.log("Email notification sent successfully")
+    } catch (err) {
       console.error("Email notification failed:", err)
-    })
+    }
 
     return NextResponse.json({
       success: true,
