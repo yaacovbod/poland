@@ -259,6 +259,7 @@ export default function Home() {
 
   const [studentId, setStudentId] = useState("")
   const [file, setFile] = useState<File | null>(null)
+  const [customFileName, setCustomFileName] = useState("")
   const [uploadStatus, setUploadStatus] = useState<{
     type: "idle" | "loading" | "success" | "error"
     message: string
@@ -272,15 +273,20 @@ export default function Home() {
     e.preventDefault()
     if (!studentId.trim() || !file) return
     setUploadStatus({ type: "loading", message: "מעלה קובץ..." })
+    const ext = file.name.includes(".") ? file.name.slice(file.name.lastIndexOf(".")) : ""
+    const baseName = customFileName.trim() || file.name.replace(/\.[^.]+$/, "")
+    const finalName = baseName.endsWith(ext) ? baseName : baseName + ext
+    const renamedFile = new File([file], finalName, { type: file.type })
     const formData = new FormData()
     formData.append("studentId", studentId.trim())
-    formData.append("file", file)
+    formData.append("file", renamedFile)
     const res = await fetch("/api/upload", { method: "POST", body: formData })
     const data = await res.json()
     if (res.ok) {
       setUploadStatus({ type: "success", message: data.message })
       setStudentId("")
       setFile(null)
+      setCustomFileName("")
       const input = document.getElementById("file-input") as HTMLInputElement
       if (input) input.value = ""
     } else {
@@ -643,7 +649,11 @@ export default function Home() {
                   <input
                     id="file-input"
                     type="file"
-                    onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                    onChange={(e) => {
+                      const f = e.target.files?.[0] ?? null
+                      setFile(f)
+                      if (f) setCustomFileName(f.name.replace(/\.[^.]+$/, ""))
+                    }}
                     style={{
                       width: "100%",
                       background: T.bgDeep,
@@ -662,6 +672,44 @@ export default function Home() {
                     קבצים מותרים: PDF, תמונות, Word
                   </p>
                 </div>
+
+                {file && (
+                  <div>
+                    <label style={{
+                      display: "block",
+                      fontSize: "0.72rem",
+                      fontWeight: 700,
+                      color: T.rose,
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      marginBottom: "0.5rem",
+                    }}>שם הקובץ בדרייב</label>
+                    <input
+                      type="text"
+                      value={customFileName}
+                      onChange={(e) => setCustomFileName(e.target.value)}
+                      style={{
+                        width: "100%",
+                        background: T.bgDeep,
+                        border: `1px solid ${T.border}`,
+                        borderRadius: "4px",
+                        padding: "0.75rem 1rem",
+                        color: T.text,
+                        fontSize: "0.9rem",
+                        textAlign: "right",
+                        outline: "none",
+                        transition: "border-color 0.2s",
+                        fontFamily: "inherit",
+                      }}
+                      onFocus={e => (e.target.style.borderColor = T.rose)}
+                      onBlur={e => (e.target.style.borderColor = T.border)}
+                      placeholder="שם הקובץ"
+                    />
+                    <p style={{ fontSize: "0.72rem", color: T.veryDim, marginTop: "0.4rem" }}>
+                      סיומת הקובץ תישמר אוטומטית
+                    </p>
+                  </div>
+                )}
 
                 {uploadStatus.type !== "idle" && (
                   <div style={{
