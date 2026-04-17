@@ -15,7 +15,7 @@ async function sendUploadNotification(studentName: string, fileName: string, dri
   const resend = new Resend(apiKey)
 
   await resend.emails.send({
-    from: "poland-trip@resend.dev",
+    from: "onboarding@resend.dev",
     to: NOTIFY_EMAILS,
     subject: `העלאת קובץ חדשה — ${studentName}`,
     html: `
