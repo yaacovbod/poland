@@ -364,7 +364,7 @@ export default function Home() {
           }} />
 
           <p style={{ color: T.muted, fontSize: "0.9rem", letterSpacing: "0.05em" }}>
-            פורטל מידע לתלמידים והורים
+            פורטל לתלמידי נעימת הלב
           </p>
 
         </div>
@@ -750,7 +750,7 @@ export default function Home() {
           letterSpacing: "0.1em",
           textTransform: "uppercase",
         }}>
-          מסע לפולין &nbsp;·&nbsp; לפרטים פנה למורה המלווה
+          מסע לפולין
         </div>
       </footer>
     </div>
