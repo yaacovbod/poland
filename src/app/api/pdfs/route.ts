@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { readConfigFile } from "@/lib/drive"
+import localPdfs from "../../../../data/pdfs.json"
 
 export interface PdfItem {
   id: string
@@ -10,6 +11,11 @@ export interface PdfItem {
 }
 
 export async function GET() {
-  const pdfs = await readConfigFile<PdfItem[]>("pdfs.json", [])
-  return NextResponse.json(pdfs)
+  const drivePdfs = await readConfigFile<PdfItem[]>("pdfs.json", [])
+  const localIds = new Set((localPdfs as PdfItem[]).map((p) => p.id))
+  const merged = [
+    ...(localPdfs as PdfItem[]),
+    ...drivePdfs.filter((p) => !localIds.has(p.id)),
+  ]
+  return NextResponse.json(merged)
 }
