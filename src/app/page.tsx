@@ -489,6 +489,7 @@ export default function Home() {
                         {block.leader && <span>· הובלה: {block.leader}</span>}
                         {block.duration && <span>· {block.duration}</span>}
                       </div>
+                      <CalendarButtons title={block.title} date={parseSpecialDate(block.dateLabel)} time={block.time} topics={block.topics} />
                     </div>
                     <ul style={{ padding: "0.75rem 1.25rem", margin: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
                       {block.topics.map((t, ti) => (
@@ -880,6 +881,7 @@ function PrepSessionCard({ session, nested }: { session: PrepSession; nested?: b
           {session.time && <><span style={{ color: T.veryDim }}>·</span><span style={{ color: T.rose }}>{session.time}</span></>}
           {session.leader && <><span style={{ color: T.veryDim }}>·</span><span>הובלה: {session.leader}</span></>}
         </div>
+        <CalendarButtons title={session.title} date={session.date} time={session.time} topics={session.topics} />
       </div>
       <ul style={{ padding: "0.7rem 1.25rem", margin: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
         {session.topics.map((t, i) => (
@@ -889,6 +891,100 @@ function PrepSessionCard({ session, nested }: { session: PrepSession; nested?: b
           </li>
         ))}
       </ul>
+    </div>
+  )
+}
+
+/* ─── Calendar Helpers ─── */
+
+function parseSpecialDate(dateLabel: string): string {
+  if (!dateLabel.includes("-")) return dateLabel
+  const slashIdx = dateLabel.indexOf("/")
+  if (slashIdx === -1) return dateLabel
+  const firstDay = dateLabel.substring(0, slashIdx).split("-")[0]
+  return `${firstDay}/${dateLabel.substring(slashIdx + 1)}`
+}
+
+function buildDateTime(date: string, time?: string): { start: string; end: string; allDay: boolean } | null {
+  const parts = date.split("/")
+  if (parts.length !== 3) return null
+  const [d, m, y] = parts.map(p => p.padStart(2, "0"))
+  if (time && /^\d{1,2}:\d{2}-\d{1,2}:\d{2}$/.test(time)) {
+    const [startT, endT] = time.split("-")
+    const [sh, sm] = startT.split(":").map(n => n.padStart(2, "0"))
+    const [eh, em] = endT.split(":").map(n => n.padStart(2, "0"))
+    return { start: `${y}${m}${d}T${sh}${sm}00`, end: `${y}${m}${d}T${eh}${em}00`, allDay: false }
+  }
+  return { start: `${y}${m}${d}`, end: `${y}${m}${d}`, allDay: true }
+}
+
+function googleCalUrl(title: string, date: string, time?: string, desc?: string): string {
+  const dt = buildDateTime(date, time)
+  if (!dt) return ""
+  const params = new URLSearchParams({ action: "TEMPLATE", text: title, dates: `${dt.start}/${dt.end}` })
+  if (desc) params.set("details", desc)
+  return `https://calendar.google.com/calendar/render?${params.toString()}`
+}
+
+function downloadIcs(title: string, date: string, time?: string, desc?: string) {
+  const dt = buildDateTime(date, time)
+  if (!dt) return
+  const lines = [
+    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Poland Trip//HE", "CALSCALE:GREGORIAN",
+    "BEGIN:VEVENT",
+    dt.allDay ? `DTSTART;VALUE=DATE:${dt.start}` : `DTSTART:${dt.start}`,
+    dt.allDay ? `DTEND;VALUE=DATE:${dt.end}` : `DTEND:${dt.end}`,
+    `SUMMARY:${title}`,
+    ...(desc ? [`DESCRIPTION:${desc.replace(/\n/g, "\\n")}`] : []),
+    "END:VEVENT", "END:VCALENDAR",
+  ]
+  const blob = new Blob([lines.join("\r\n")], { type: "text/calendar;charset=utf-8" })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement("a")
+  a.href = url
+  a.download = `${title}.ics`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
+function CalendarButtons({ title, date, time, topics }: { title: string; date: string; time?: string; topics: Topic[] }) {
+  const desc = topics.map(t => `${t.title}: ${t.desc}`).join("\n")
+  const gcUrl = googleCalUrl(title, date, time, desc)
+  if (!gcUrl) return null
+  return (
+    <div style={{ display: "flex", gap: "0.35rem", alignItems: "center", marginLeft: "auto" }}>
+      <a
+        href={gcUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        title="הוסף ל-Google Calendar"
+        style={{ display: "flex", alignItems: "center", opacity: 0.7, transition: "opacity 0.2s" }}
+        onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
+        onMouseLeave={e => (e.currentTarget.style.opacity = "0.7")}
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <rect x="0.5" y="0.5" width="23" height="23" rx="4" fill="white" stroke="#dadce0"/>
+          <rect x="0" y="0" width="24" height="7" rx="3" fill="#1a73e8"/>
+          <rect x="0" y="4" width="24" height="3" fill="#1a73e8"/>
+          <text x="12" y="19" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#1a73e8" fontFamily="sans-serif">31</text>
+        </svg>
+      </a>
+      <button
+        onClick={() => downloadIcs(title, date, time, desc)}
+        title="הוסף ל-Apple Calendar / iCal"
+        style={{ display: "flex", alignItems: "center", background: "none", border: "none", cursor: "pointer", padding: 0, opacity: 0.7, transition: "opacity 0.2s" }}
+        onMouseEnter={e => (e.currentTarget.style.opacity = "1")}
+        onMouseLeave={e => (e.currentTarget.style.opacity = "0.7")}
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <rect x="0.5" y="0.5" width="23" height="23" rx="4" fill="white" stroke="#e0e0e0"/>
+          <rect x="0" y="0" width="24" height="7" rx="3" fill="#e53935"/>
+          <rect x="0" y="4" width="24" height="3" fill="#e53935"/>
+          <text x="12" y="19" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#e53935" fontFamily="sans-serif">31</text>
+        </svg>
+      </button>
     </div>
   )
 }
