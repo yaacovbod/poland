@@ -552,7 +552,9 @@ export default function Home() {
                       </div>
                     </div>
                     <a
-                      href={`https://drive.google.com/uc?export=download&id=${pdf.filename}`}
+                      href={pdf.type === "local"
+                        ? `/api/files/${encodeURIComponent(pdf.filename)}`
+                        : `https://drive.google.com/uc?export=download&id=${pdf.filename}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{

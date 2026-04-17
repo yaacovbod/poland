@@ -15,10 +15,12 @@
 - `src/app/admin/page.tsx` - ממשק ניהול מוגן בסיסמה
 - `src/app/api/upload/route.ts` - קבלת קובץ מתלמיד ושמירה בדרייב
 - `src/app/api/pdfs/route.ts` - החזרת רשימת PDF להורדה
+- `src/app/api/files/[filename]/route.ts` - הגשת קבצים מקומיים מתיקיית `files/`
 - `src/app/api/admin/` - API לממשק הניהול (students, pdfs, schedule)
 - `src/lib/drive.ts` - כל קריאות Google Drive API (fetch בלבד, ללא googleapis)
 - `data/students.json` - רשימת תלמידים ברירת מחדל (fallback)
 - `data/schedule.json` - לו"ז ברירת מחדל (fallback)
+- `files/` - קבצים סטטיים להורדה (PDF וכד'). מוגשים דרך `/api/files/[filename]`
 
 ## אחסון נתונים
 כל הנתונים הדינמיים (תלמידים, לו"ז, רשימת PDFs) נשמרים כקבצי JSON בתיקיית `_config` בגוגל דרייב. הקבצים ב-`data/` משמשים כ-fallback בלבד.

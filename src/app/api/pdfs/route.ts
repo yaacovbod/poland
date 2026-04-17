@@ -1,25 +1,15 @@
 import { NextResponse } from "next/server"
-import { readFileSync } from "fs"
-import path from "path"
+import { readConfigFile } from "@/lib/drive"
 
 export interface PdfItem {
   id: string
   name: string
   description: string
-  filename: string
-}
-
-function getPdfs(): PdfItem[] {
-  try {
-    const filePath = path.join(process.cwd(), "data", "pdfs.json")
-    const raw = readFileSync(filePath, "utf-8")
-    return JSON.parse(raw)
-  } catch {
-    return []
-  }
+  filename: string // Google Drive file ID or local filename
+  type?: "drive" | "local" // default: "drive"
 }
 
 export async function GET() {
-  const pdfs = getPdfs()
+  const pdfs = await readConfigFile<PdfItem[]>("pdfs.json", [])
   return NextResponse.json(pdfs)
 }
