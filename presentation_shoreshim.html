@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מסע שורשים: היהודים בפולין – שיעור 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
+  <style>
+    :root {
+      --teal:       #0891B2;
+      --teal-light: #E0F2FE;
+      --dark:       #111111;
+      --gray:       #6B7280;
+      --bg:         #F9FAFB;
+      --white:      #ffffff;
+    }
+
+    /* ── Base ── */
+    .reveal { font-family: 'Heebo', sans-serif; color: var(--dark); direction: rtl; }
+    .reveal .slides { text-align: right; }
+    .reveal section { height: 100%; padding: 0 !important; box-sizing: border-box; }
+    .reveal .progress { background: var(--teal-light); }
+    .reveal .progress span { background: var(--teal); }
+    .reveal .controls { color: var(--teal); }
+    .reveal .slide-number {
+      background: var(--teal); color: white;
+      font-family: 'Heebo', sans-serif; font-weight: 700;
+      border-radius: 6px; padding: 4px 10px;
+    }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+
+    .highlight { color: var(--teal); font-weight: 700; }
+    .tag {
+      display: inline-block; background: var(--teal-light); color: var(--teal);
+      font-size: .8rem; font-weight: 700; padding: 4px 14px;
+      border-radius: 100px; margin: 3px;
+    }
+
+    /* ──────────────────────────────
+       TITLE SLIDE
+    ────────────────────────────── */
+    .s-title {
+      height: 100%; display: flex; align-items: center;
+      padding: 0 72px; box-sizing: border-box; gap: 0;
+    }
+    .s-title__art { flex: 0 0 340px; display: flex; justify-content: center; align-items: center; }
+    .s-title__text { flex: 1; display: flex; flex-direction: column; align-items: flex-end; direction: rtl; }
+    .s-title__eyebrow {
+      font-size: .9rem; font-weight: 700; color: var(--teal); letter-spacing: .15em;
+      margin-bottom: 18px; animation: fadeUp .5s ease both .1s;
+    }
+    .s-title__bar {
+      width: 64px; height: 5px; background: var(--teal); border-radius: 3px;
+      margin-bottom: 18px; animation: fadeUp .5s ease both .2s;
+    }
+    .s-title__h1 {
+      font-size: 4.2rem; font-weight: 900; line-height: 1.1; color: var(--dark);
+      margin-bottom: 10px; animation: fadeUp .5s ease both .3s;
+    }
+    .s-title__sub {
+      font-size: 1.25rem; font-weight: 300; color: var(--gray);
+      margin-bottom: 36px; animation: fadeUp .5s ease both .45s;
+    }
+    .s-title__chips { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; animation: fadeUp .5s ease both .6s; }
+    .chip { background: var(--teal-light); color: var(--teal); font-size: .85rem; font-weight: 700; padding: 7px 18px; border-radius: 100px; }
+
+    /* ──────────────────────────────
+       SECTION HEADER SLIDE
+    ────────────────────────────── */
+    .s-section {
+      height: 100%; display: flex; align-items: center;
+      padding: 0 72px; box-sizing: border-box; gap: 48px;
+    }
+    .s-section__art { flex: 0 0 280px; display: flex; justify-content: center; align-items: center; }
+    .s-section__text { flex: 1; direction: rtl; text-align: right; }
+    .s-section__num  { font-size: .8rem; font-weight: 700; color: var(--teal); letter-spacing: .2em; margin-bottom: 10px; }
+    .s-section__h2   { font-size: 3rem; font-weight: 900; color: var(--dark); line-height: 1.15; margin-bottom: 18px; }
+    .s-section__time {
+      display: inline-block; background: var(--teal); color: white;
+      font-size: .95rem; font-weight: 700; padding: 9px 22px; border-radius: 100px;
+    }
+
+    /* ──────────────────────────────
+       CONTENT SLIDE (full-width text + small top icon)
+    ────────────────────────────── */
+    .s-content {
+      height: 100%; display: flex; flex-direction: column; justify-content: center;
+      padding: 40px 72px; box-sizing: border-box; direction: rtl;
+    }
+    .s-content__label {
+      font-size: .75rem; font-weight: 700; color: var(--teal);
+      letter-spacing: .15em; margin-bottom: 8px;
+    }
+    .s-content__h2 {
+      font-size: 1.9rem; font-weight: 900; color: var(--dark);
+      margin-bottom: 24px; padding-bottom: 16px;
+      border-bottom: 3px solid var(--teal-light);
+    }
+    .s-content__body { display: flex; gap: 40px; align-items: flex-start; direction: rtl; }
+    .s-content__bullets { flex: 1; }
+    .s-content__art    { flex: 0 0 220px; display: flex; justify-content: center; align-items: center; }
+
+    /* Bullet list — simple, reliable RTL */
+    .bullets { list-style: none; padding: 0; margin: 0; }
+    .bullets li {
+      direction: rtl; text-align: right;
+      font-size: 1.1rem; font-weight: 400; line-height: 1.55;
+      color: var(--dark); margin-bottom: 16px;
+      padding-right: 22px; position: relative;
+    }
+    .bullets li::before {
+      content: '';
+      width: 9px; height: 9px; background: var(--teal);
+      border-radius: 50%; position: absolute; right: 0; top: 8px;
+    }
+
+    /* ──────────────────────────────
+       TWO-COLUMN CARDS
+    ────────────────────────────── */
+    .s-cards {
+      height: 100%; display: flex; flex-direction: column; justify-content: center;
+      padding: 40px 72px; box-sizing: border-box; direction: rtl;
+    }
+    .s-cards__h2 {
+      font-size: 1.75rem; font-weight: 900; color: var(--dark);
+      margin-bottom: 24px; padding-bottom: 14px;
+      border-bottom: 3px solid var(--teal-light);
+    }
+    .s-cards__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; direction: rtl; }
+    .card { background: var(--teal-light); border-radius: 12px; padding: 20px 22px; direction: rtl; text-align: right; }
+    .card__title { font-size: 1rem; font-weight: 700; color: var(--teal); margin-bottom: 8px; }
+    .card__body  { font-size: .92rem; font-weight: 400; color: var(--dark); line-height: 1.6; }
+
+    /* ──────────────────────────────
+       TIMELINE SLIDE
+    ────────────────────────────── */
+    .s-timeline {
+      height: 100%; display: flex; align-items: center;
+      padding: 40px 72px; box-sizing: border-box; gap: 48px; direction: rtl;
+    }
+    .s-timeline__art { flex: 0 0 220px; display: flex; justify-content: center; align-items: center; }
+    .s-timeline__main { flex: 1; direction: rtl; }
+    .s-timeline__h2   { font-size: 1.7rem; font-weight: 900; color: var(--dark); margin-bottom: 28px; }
+    .tl { list-style: none; padding: 0; margin: 0; position: relative; }
+    .tl::before {
+      content: ''; position: absolute; right: 19px; top: 6px; bottom: 6px;
+      width: 2px; background: var(--teal-light);
+    }
+    .tl__item { display: flex; align-items: flex-start; gap: 16px; direction: rtl; margin-bottom: 18px; }
+    .tl__dot {
+      width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%;
+      background: var(--teal); color: white; font-weight: 900; font-size: .8rem;
+      display: flex; align-items: center; justify-content: center; position: relative; z-index: 1;
+    }
+    .tl__body { text-align: right; }
+    .tl__year { font-size: .82rem; font-weight: 700; color: var(--teal); margin-bottom: 2px; }
+    .tl__text { font-size: .97rem; color: var(--dark); line-height: 1.45; }
+
+    /* ──────────────────────────────
+       QUESTION CARDS
+    ────────────────────────────── */
+    .s-questions {
+      height: 100%; display: flex; align-items: center;
+      padding: 40px 72px; box-sizing: border-box; gap: 48px; direction: rtl;
+    }
+    .s-questions__art  { flex: 0 0 220px; display: flex; justify-content: center; align-items: center; }
+    .s-questions__main { flex: 1; direction: rtl; }
+    .s-questions__label { font-size: .75rem; font-weight: 700; color: var(--teal); letter-spacing: .2em; margin-bottom: 8px; }
+    .s-questions__h2    { font-size: 1.7rem; font-weight: 900; color: var(--dark); margin-bottom: 22px; }
+    .qcards { display: flex; flex-direction: column; gap: 12px; }
+    .qcard {
+      display: flex; align-items: flex-start; gap: 14px; direction: rtl;
+      background: white; border: 2px solid var(--teal-light); border-radius: 12px; padding: 15px 18px;
+    }
+    .qcard__num {
+      width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%;
+      background: var(--teal); color: white; font-weight: 900; font-size: .85rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .qcard__text { font-size: .98rem; line-height: 1.5; color: var(--dark); text-align: right; }
+
+    /* ──────────────────────────────
+       AGENDA
+    ────────────────────────────── */
+    .s-agenda {
+      height: 100%; display: flex; flex-direction: column; justify-content: center;
+      padding: 40px 72px; box-sizing: border-box; direction: rtl;
+    }
+    .s-agenda__h2 { font-size: 1.7rem; font-weight: 900; color: var(--dark); margin-bottom: 22px; }
+    .ag { display: flex; flex-direction: column; gap: 9px; }
+    .ag__row {
+      display: grid; grid-template-columns: 88px 1fr auto;
+      gap: 16px; align-items: center; direction: rtl;
+      background: var(--bg); border-radius: 10px; padding: 11px 18px;
+    }
+    .ag__row:nth-child(odd) { background: var(--teal-light); }
+    .ag__time  { font-size: .9rem; font-weight: 700; color: var(--teal); text-align: right; }
+    .ag__topic { font-size: .9rem; font-weight: 700; color: var(--dark); text-align: right; }
+    .ag__desc  { font-size: .78rem; color: var(--gray); text-align: left; }
+
+    /* ──────────────────────────────
+       CLOSING SLIDE
+    ────────────────────────────── */
+    .s-close {
+      height: 100%; display: flex; align-items: center;
+      padding: 0 72px; box-sizing: border-box; gap: 48px;
+      background: var(--teal); direction: rtl;
+    }
+    .s-close__text  { flex: 1; direction: rtl; text-align: right; }
+    .s-close__art   { flex: 0 0 240px; display: flex; justify-content: center; align-items: center; }
+    .s-close__label { font-size: .78rem; font-weight: 700; color: rgba(255,255,255,.65); letter-spacing: .2em; margin-bottom: 10px; }
+    .s-close__h2    { font-size: 2.4rem; font-weight: 900; color: white; line-height: 1.15; margin-bottom: 24px; }
+    .close-bullets  { display: flex; flex-direction: column; gap: 13px; }
+    .close-bullet {
+      direction: rtl; text-align: right; font-size: 1rem; color: rgba(255,255,255,.9);
+      line-height: 1.45; padding-right: 24px; position: relative;
+    }
+    .close-bullet::before {
+      content: '✓'; position: absolute; right: 0; color: white; font-weight: 900;
+    }
+  </style>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+
+    <!-- ① TITLE -->
+    <section data-background-color="#ffffff">
+      <div class="s-title">
+        <div class="s-title__art">
+          <svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Canopy -->
+            <circle cx="150" cy="100" r="78" fill="#E0F2FE"/>
+            <circle cx="112" cy="115" r="52" fill="#BAE6FD" opacity=".55"/>
+            <circle cx="190" cy="112" r="46" fill="#BAE6FD" opacity=".45"/>
+            <circle cx="150" cy="82"  r="56" fill="#0891B2" opacity=".22"/>
+            <circle cx="130" cy="95"  r="38" fill="#0891B2" opacity=".28"/>
+            <circle cx="168" cy="90"  r="34" fill="#0891B2" opacity=".24"/>
+            <!-- Trunk -->
+            <rect x="138" y="168" width="24" height="68" rx="7" fill="#0891B2"/>
+            <!-- Roots -->
+            <path d="M150 234 Q116 252 84 272"  stroke="#0891B2" stroke-width="4"   stroke-linecap="round" fill="none"/>
+            <path d="M150 234 Q164 255 160 278" stroke="#0891B2" stroke-width="3"   stroke-linecap="round" fill="none"/>
+            <path d="M150 234 Q184 252 216 270" stroke="#0891B2" stroke-width="4"   stroke-linecap="round" fill="none"/>
+            <path d="M84  272 Q66 280 52 288"   stroke="#0891B2" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".5"/>
+            <path d="M216 270 Q234 278 248 286"  stroke="#0891B2" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".5"/>
+            <path d="M150 244 Q128 260 108 272" stroke="#E0F2FE" stroke-width="2"   stroke-linecap="round" fill="none"/>
+            <path d="M150 244 Q172 260 192 270" stroke="#E0F2FE" stroke-width="2"   stroke-linecap="round" fill="none"/>
+            <!-- Star of David -->
+            <polygon points="150,58 158,73 142,73" fill="white" opacity=".9"/>
+            <polygon points="150,88 158,73 142,73" fill="white" opacity=".9"/>
+          </svg>
+        </div>
+        <div class="s-title__text">
+          <div class="s-title__eyebrow">מסע שורשים · יהודים בפולין</div>
+          <div class="s-title__bar"></div>
+          <div class="s-title__h1">שורשים</div>
+          <div class="s-title__sub">שיעור 1 מתוך סדרת ההכנה לטיול</div>
+          <div class="s-title__chips">
+            <div class="chip">90 דקות</div>
+            <div class="chip">כיתות י'–י"ב</div>
+            <div class="chip">היסטוריה</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ② AGENDA -->
+    <section data-background-color="#F9FAFB">
+      <div class="s-agenda">
+        <div class="s-agenda__h2">מבנה השיעור</div>
+        <div class="ag">
+          <div class="ag__row"><div class="ag__time">10 דק'</div><div class="ag__topic">פתיחה</div><div class="ag__desc">הצרת קשר היסטורי</div></div>
+          <div class="ag__row"><div class="ag__time">25 דק'</div><div class="ag__topic">שורשים ומקורות</div><div class="ag__desc">הגירה לפולין, מאות 12–13</div></div>
+          <div class="ag__row"><div class="ag__time">20 דק'</div><div class="ag__topic">בסיס השפה הקהילתית</div><div class="ag__desc">מגנא כרטה יהודית 1264</div></div>
+          <div class="ag__row"><div class="ag__time">20 דק'</div><div class="ag__topic">פרקים תרבותיים</div><div class="ag__desc">קהילות, תרבות, לימוד</div></div>
+          <div class="ag__row"><div class="ag__time">10 דק'</div><div class="ag__topic">סגירת המסרים</div><div class="ag__desc">סיכום ושאלות</div></div>
+          <div class="ag__row"><div class="ag__time">5 דק'</div><div class="ag__topic">שאלות פתוחות</div><div class="ag__desc">דיון ורגשות</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ③ SECTION: פתיחה -->
+    <section data-background-color="#ffffff">
+      <div class="s-section">
+        <div class="s-section__art">
+          <!-- Airplane SVG -->
+          <svg width="260" height="240" viewBox="0 0 260 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Dashed flight path -->
+            <path d="M24 190 Q100 60 236 90" stroke="#E0F2FE" stroke-width="2.5" stroke-dasharray="9 7" fill="none" stroke-linecap="round"/>
+            <!-- Airplane -->
+            <g transform="translate(200,72) rotate(-22)">
+              <!-- Body -->
+              <ellipse cx="0" cy="0" rx="32" ry="10" fill="#0891B2"/>
+              <!-- Wings -->
+              <path d="M-6,-3 L-22,18 L4,8 Z"   fill="#0891B2" opacity=".65"/>
+              <path d="M-6,3  L-22,-14 L4,-7 Z"  fill="#0891B2" opacity=".65"/>
+              <!-- Tail -->
+              <path d="M-26,-3 L-38,-12 L-28,0 Z" fill="#0891B2" opacity=".55"/>
+              <!-- Nose window -->
+              <circle cx="18" cy="0" r="4" fill="white" opacity=".8"/>
+              <circle cx="6"  cy="0" r="3" fill="white" opacity=".6"/>
+            </g>
+            <!-- Destination star -->
+            <circle cx="236" cy="90" r="18" fill="#E0F2FE"/>
+            <polygon points="236,76 240,86 230,86" fill="#0891B2"/>
+            <polygon points="236,104 240,94 230,94" fill="#0891B2"/>
+            <!-- Question mark -->
+            <text x="38" y="185" font-size="100" font-weight="900" fill="#E0F2FE" font-family="Heebo,sans-serif" opacity=".9">?</text>
+          </svg>
+        </div>
+        <div class="s-section__text">
+          <div class="s-section__num">חלק ראשון</div>
+          <div class="s-section__h2">פתיחה</div>
+          <div class="s-section__time">⏱ 10 דקות</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ④ למה פולין -->
+    <section data-background-color="#ffffff">
+      <div class="s-content">
+        <div class="s-content__label">פתיחה · כניסה לנושא</div>
+        <div class="s-content__h2">למה פולין?</div>
+        <div class="s-content__body">
+          <div class="s-content__bullets">
+            <ul class="bullets">
+              <li>פולין אינה רק "מקום שרצחו יהודים" — היא גם מקום שבו חיו, יצרו, ופיתחו עולם תרבותי שלם</li>
+              <li>השיעור הראשון עוסק ב<span class="highlight">"שורשים"</span>: מה, למה, ואיך הגיעו יהודים לפולין</li>
+              <li>זיכרון ללא שורשים הוא כמו קיר ללא יסודות — נסבר את הקרקע לפני שנדבר על השואה</li>
+              <li>אנחנו מחפשים את האנשים שחיו ואהבו — לא רק את הרצח</li>
+            </ul>
+          </div>
+          <div class="s-content__art">
+            <!-- Map pin over Poland -->
+            <svg width="200" height="220" viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Poland outline (simplified polygon) -->
+              <polygon points="35,55 70,38 142,42 172,58 182,90 174,122 160,148 142,166 118,176 96,174 70,162 48,142 32,112 30,80" fill="#E0F2FE" stroke="#0891B2" stroke-width="2" stroke-linejoin="round"/>
+              <!-- Map pin -->
+              <path d="M103 55 C103 55 78 82 78 96 C78 111 89.5 123 103 123 C116.5 123 128 111 128 96 C128 82 103 55 103 55Z" fill="#0891B2"/>
+              <circle cx="103" cy="96" r="11" fill="white"/>
+              <!-- Star of David in pin -->
+              <polygon points="103,85 107,92 99,92" fill="#0891B2"/>
+              <polygon points="103,99 107,92 99,92" fill="#0891B2"/>
+              <!-- Shadow -->
+              <ellipse cx="103" cy="128" rx="13" ry="4" fill="#0891B2" opacity=".15"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑤ SECTION: שורשים -->
+    <section data-background-color="#ffffff">
+      <div class="s-section">
+        <div class="s-section__art">
+          <!-- Migration arrows -->
+          <svg width="260" height="240" viewBox="0 0 260 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="m1" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
+                <polygon points="0,0 0,7 9,3.5" fill="#0891B2"/>
+              </marker>
+            </defs>
+            <!-- Arrows flowing east (right-to-left in view = west Europe → Poland) -->
+            <path d="M28,68  Q90,58  148,72"  stroke="#0891B2" stroke-width="2.5" stroke-dasharray="7 5" fill="none" marker-end="url(#m1)"/>
+            <path d="M22,118 Q88,110 148,118" stroke="#0891B2" stroke-width="2.5" stroke-dasharray="7 5" fill="none" marker-end="url(#m1)"/>
+            <path d="M30,168 Q92,162 148,168" stroke="#0891B2" stroke-width="2.5" stroke-dasharray="7 5" fill="none" marker-end="url(#m1)"/>
+            <!-- People dots (origin) -->
+            <circle cx="22"  cy="68"  r="9" fill="#0891B2" opacity=".35"/>
+            <circle cx="16"  cy="118" r="9" fill="#0891B2" opacity=".35"/>
+            <circle cx="24"  cy="168" r="9" fill="#0891B2" opacity=".35"/>
+            <!-- Destination: Star of David circle -->
+            <circle cx="186" cy="118" r="46" fill="#E0F2FE"/>
+            <circle cx="186" cy="118" r="34" fill="white"/>
+            <polygon points="186,96 194,110 178,110" fill="#0891B2"/>
+            <polygon points="186,140 194,126 178,126" fill="#0891B2"/>
+            <!-- Label -->
+            <text x="186" y="122" font-size="11" font-weight="700" fill="#0891B2" text-anchor="middle" font-family="Heebo">פולין</text>
+          </svg>
+        </div>
+        <div class="s-section__text">
+          <div class="s-section__num">חלק שני</div>
+          <div class="s-section__h2">שורשים ומקורות</div>
+          <div class="s-section__time">⏱ 25 דקות</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑥ הגירה לפולין -->
+    <section data-background-color="#ffffff">
+      <div class="s-content">
+        <div class="s-content__label">שורשים ומקורות · הגירה לפולין</div>
+        <div class="s-content__h2">מדוע הגיעו יהודים לפולין?</div>
+        <div class="s-content__body">
+          <div class="s-content__bullets">
+            <ul class="bullets">
+              <li>יהודים הגיעו בעיקר ממערב אירופה — גירושים ורדיפות בצרפת, גרמניה ואנגליה</li>
+              <li>גלי ההגירה העיקריים: <span class="highlight">מאות 12–13</span>, בעקבות מסעות הצלב ורדיפות דת</li>
+              <li>פולין הציעה מסחר, אחוזות וניהול קהילה עצמאית — אפשרויות שלא היו קיימות במערב</li>
+              <li>הנהגת פולין ראתה ביהודים כוח כלכלי — סוחרים, בנקאים, ומנהלי מסחר בין-אירופי</li>
+            </ul>
+          </div>
+          <div class="s-content__art">
+            <!-- Ship -->
+            <svg width="190" height="210" viewBox="0 0 190 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Waves -->
+              <path d="M8,162 Q36,150 64,162 Q92,174 120,162 Q148,150 176,162" stroke="#E0F2FE" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path d="M4,178 Q32,166 60,178 Q88,190 116,178 Q144,166 172,178" stroke="#E0F2FE" stroke-width="2" fill="none" stroke-linecap="round" opacity=".6"/>
+              <!-- Hull -->
+              <path d="M40,152 L44,130 L146,130 L150,152 Q115,164 75,164 Z" fill="#0891B2"/>
+              <!-- Cabin -->
+              <rect x="72" y="110" width="46" height="22" rx="4" fill="#0891B2" opacity=".7"/>
+              <!-- Windows -->
+              <circle cx="82"  cy="121" r="5" fill="white"/>
+              <circle cx="95"  cy="121" r="5" fill="white"/>
+              <circle cx="108" cy="121" r="5" fill="white"/>
+              <!-- Mast -->
+              <line x1="95" y1="48" x2="95" y2="112" stroke="#0891B2" stroke-width="3"/>
+              <!-- Sail -->
+              <path d="M97,50 L132,80 L97,110 Z" fill="#E0F2FE"/>
+              <!-- Star on sail -->
+              <polygon points="119,72 123,79 115,79" fill="#0891B2" opacity=".5"/>
+              <polygon points="119,86 123,79 115,79" fill="#0891B2" opacity=".5"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑦ TIMELINE -->
+    <section data-background-color="#F9FAFB">
+      <div class="s-timeline">
+        <div class="s-timeline__art">
+          <svg width="190" height="230" viewBox="0 0 190 230" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- vertical spine -->
+            <line x1="95" y1="18" x2="95" y2="218" stroke="#E0F2FE" stroke-width="3"/>
+            <!-- nodes -->
+            <circle cx="95" cy="42"  r="15" fill="#0891B2"/>
+            <circle cx="95" cy="94"  r="15" fill="#0891B2"/>
+            <circle cx="95" cy="148" r="15" fill="#0891B2"/>
+            <circle cx="95" cy="200" r="15" fill="#0891B2" opacity=".5"/>
+            <!-- year badges -->
+            <rect x="104" y="32"  width="74" height="20" rx="6" fill="#E0F2FE"/>
+            <rect x="104" y="84"  width="74" height="20" rx="6" fill="#E0F2FE"/>
+            <rect x="104" y="138" width="74" height="20" rx="6" fill="#E0F2FE"/>
+            <rect x="104" y="190" width="74" height="20" rx="6" fill="#F0F0F0"/>
+            <text x="141" y="47"  font-size="10" font-weight="700" fill="#0891B2" text-anchor="middle" font-family="Heebo">מאה 11–12</text>
+            <text x="141" y="99"  font-size="10" font-weight="700" fill="#0891B2" text-anchor="middle" font-family="Heebo">1264</text>
+            <text x="141" y="153" font-size="10" font-weight="700" fill="#0891B2" text-anchor="middle" font-family="Heebo">מאות 15–16</text>
+            <text x="141" y="205" font-size="10" font-weight="700" fill="#6B7280" text-anchor="middle" font-family="Heebo">1648</text>
+            <!-- check marks -->
+            <text x="95" y="47"  font-size="11" fill="white" font-weight="900" text-anchor="middle" dominant-baseline="middle" font-family="Heebo">✓</text>
+            <text x="95" y="99"  font-size="11" fill="white" font-weight="900" text-anchor="middle" dominant-baseline="middle" font-family="Heebo">✓</text>
+            <text x="95" y="153" font-size="11" fill="white" font-weight="900" text-anchor="middle" dominant-baseline="middle" font-family="Heebo">✓</text>
+            <text x="95" y="205" font-size="11" fill="white" font-weight="700" text-anchor="middle" dominant-baseline="middle" font-family="Heebo">!</text>
+          </svg>
+        </div>
+        <div class="s-timeline__main">
+          <div class="s-timeline__h2">ציר זמן: יהודים בפולין</div>
+          <ul class="tl">
+            <li class="tl__item">
+              <div class="tl__dot">1</div>
+              <div class="tl__body"><div class="tl__year">מאה 11–12</div><div class="tl__text">גל הגירה ראשון ממרכז אירופה — מסעות הצלב ורדיפות בגרמניה</div></div>
+            </li>
+            <li class="tl__item">
+              <div class="tl__dot">2</div>
+              <div class="tl__body"><div class="tl__year">1264</div><div class="tl__text">חוקת קליש — "המגנא כרטה היהודית" — מעמד חוקי מוגדר</div></div>
+            </li>
+            <li class="tl__item">
+              <div class="tl__dot">3</div>
+              <div class="tl__body"><div class="tl__year">מאות 15–16</div><div class="tl__text">פולין הפכה למרכז התורה — בית לכ-80% מיהודי העולם</div></div>
+            </li>
+            <li class="tl__item">
+              <div class="tl__dot" style="background:#6B7280">4</div>
+              <div class="tl__body"><div class="tl__year">1648</div><div class="tl__text">פרעות ח'מלניצקי — נקודת מפנה שהאיצה גלי הגירה</div></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑧ SECTION: חוקת קליש -->
+    <section data-background-color="#ffffff">
+      <div class="s-section">
+        <div class="s-section__art">
+          <!-- Scroll -->
+          <svg width="220" height="250" viewBox="0 0 220 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Shadow -->
+            <rect x="40" y="46" width="142" height="175" rx="5" fill="#E0F2FE" opacity=".4"/>
+            <!-- Body -->
+            <rect x="36" y="40" width="142" height="175" rx="5" fill="#F9FAFB" stroke="#0891B2" stroke-width="2"/>
+            <!-- Top roll -->
+            <ellipse cx="107" cy="40"  rx="71" ry="12" fill="#E0F2FE" stroke="#0891B2" stroke-width="2"/>
+            <!-- Bottom roll -->
+            <ellipse cx="107" cy="215" rx="71" ry="12" fill="#E0F2FE" stroke="#0891B2" stroke-width="2"/>
+            <!-- Year heading -->
+            <text x="107" y="72" font-size="18" font-weight="900" fill="#0891B2" text-anchor="middle" font-family="Heebo">1264</text>
+            <!-- Divider -->
+            <line x1="60" y1="80" x2="154" y2="80" stroke="#0891B2" stroke-width="1.5" opacity=".3"/>
+            <!-- Text lines -->
+            <line x1="60" y1="96"  x2="154" y2="96"  stroke="#0891B2" stroke-width="1.2" opacity=".25"/>
+            <line x1="60" y1="110" x2="154" y2="110" stroke="#0891B2" stroke-width="1.2" opacity=".25"/>
+            <line x1="60" y1="124" x2="140" y2="124" stroke="#0891B2" stroke-width="1.2" opacity=".25"/>
+            <line x1="60" y1="138" x2="154" y2="138" stroke="#0891B2" stroke-width="1.2" opacity=".25"/>
+            <line x1="60" y1="152" x2="128" y2="152" stroke="#0891B2" stroke-width="1.2" opacity=".25"/>
+            <!-- Seal circle -->
+            <circle cx="107" cy="186" r="20" fill="#E0F2FE" stroke="#0891B2" stroke-width="1.5"/>
+            <polygon points="107,172 112,181 102,181" fill="#0891B2"/>
+            <polygon points="107,200 112,191 102,191" fill="#0891B2"/>
+          </svg>
+        </div>
+        <div class="s-section__text">
+          <div class="s-section__num">חלק שלישי</div>
+          <div class="s-section__h2">חוקת קליש 1264</div>
+          <div class="s-section__time">⏱ 20 דקות</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑨ חוקת קליש content -->
+    <section data-background-color="#ffffff">
+      <div class="s-content">
+        <div class="s-content__label">חוקת קליש · המגנא כרטה היהודית</div>
+        <div class="s-content__h2">המסמך המייסד — 1264</div>
+        <div class="s-content__body">
+          <div class="s-content__bullets">
+            <ul class="bullets">
+              <li>הנסיך בולסלב הקדוש הוציא חוקה שנחשבת <span class="highlight">"המגנא כרטה של יהדות פולין"</span></li>
+              <li>החוקה קבעה: יהודים אינם עבדי הכנסייה, אסרה עלילות דם ועלילות עלבון</li>
+              <li>הוקמו בתי דין עצמאיים, וניהול עצמי בענייני הקהילה הוכר רשמית</li>
+              <li>גם אחרי שהחוקה "פקעה" — קהילות ידעו להשיב לה תוקף בפני השלטון</li>
+            </ul>
+          </div>
+          <div class="s-content__art">
+            <!-- Shield -->
+            <svg width="185" height="215" viewBox="0 0 185 215" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M92 15 L168 48 L168 120 Q168 178 92 205 Q16 178 16 120 L16 48 Z" fill="#E0F2FE" stroke="#0891B2" stroke-width="2.5"/>
+              <path d="M92 36 L150 62 L150 118 Q150 162 92 183 Q34 162 34 118 L34 62 Z" fill="white"/>
+              <!-- Star of David -->
+              <polygon points="92,70 102,86 82,86" fill="#0891B2"/>
+              <polygon points="92,102 102,86 82,86" fill="#0891B2"/>
+              <!-- Lines -->
+              <line x1="60" y1="116" x2="124" y2="116" stroke="#0891B2" stroke-width="1.5" opacity=".35"/>
+              <line x1="60" y1="128" x2="124" y2="128" stroke="#0891B2" stroke-width="1.5" opacity=".35"/>
+              <line x1="68" y1="140" x2="116" y2="140" stroke="#0891B2" stroke-width="1.5" opacity=".35"/>
+              <!-- Checkmark badge -->
+              <circle cx="152" cy="178" r="22" fill="#0891B2"/>
+              <path d="M141,178 L149,186 L164,168" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑩ WHY KALISZ MATTERS -->
+    <section data-background-color="#F9FAFB">
+      <div class="s-cards">
+        <div class="s-cards__h2">למה חוקת קליש כל כך חשובה?</div>
+        <div class="s-cards__grid">
+          <div class="card"><div class="card__title">בזמנה</div><div class="card__body">הגנה מפני אלימות, חופש מסחר, שמירת שבת וחגים — דבר שלא היה קיים באירופה הנוצרית</div></div>
+          <div class="card"><div class="card__title">לאורך הדורות</div><div class="card__body">בסיס לפיו נדרשו מלכים לנהוג — גם כשמלך חדש עלה, ניסו יהודים לחדש את זכויותיהם</div></div>
+          <div class="card"><div class="card__title">כנגד המיתוס</div><div class="card__body">מפריכה את הרושם שיהודים היו תמיד נרדפים — פולין הייתה גם מקלט ומרחב פעולה</div></div>
+          <div class="card"><div class="card__title">ביחס לשואה</div><div class="card__body">מדגישה שהשואה לא הייתה "בלתי נמנעת" — היה כאן עולם שנשמד, לא ריק שנוצר</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑪ SECTION: פרקים תרבותיים -->
+    <section data-background-color="#ffffff">
+      <div class="s-section">
+        <div class="s-section__art">
+          <!-- Synagogue -->
+          <svg width="240" height="250" viewBox="0 0 240 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Building body -->
+            <rect x="44" y="130" width="152" height="96" rx="4" fill="#E0F2FE" stroke="#0891B2" stroke-width="2"/>
+            <!-- Roof arch -->
+            <path d="M44 130 Q120 68 196 130" stroke="#0891B2" stroke-width="2.5" fill="#E0F2FE" opacity=".4"/>
+            <path d="M44 130 Q120 68 196 130" stroke="#0891B2" stroke-width="2.5" fill="none"/>
+            <!-- Dome -->
+            <ellipse cx="120" cy="88" rx="26" ry="18" fill="#0891B2" opacity=".18" stroke="#0891B2" stroke-width="1.5"/>
+            <!-- Star of David on dome -->
+            <polygon points="120,74 125,83 115,83" fill="#0891B2"/>
+            <polygon points="120,97 125,88 115,88" fill="#0891B2"/>
+            <!-- Door arch -->
+            <path d="M97 226 L97 182 Q120 168 143 182 L143 226 Z" fill="#0891B2" opacity=".18" stroke="#0891B2" stroke-width="1.5"/>
+            <!-- Windows -->
+            <ellipse cx="72"  cy="162" rx="11" ry="13" fill="white" stroke="#0891B2" stroke-width="1.5"/>
+            <ellipse cx="168" cy="162" rx="11" ry="13" fill="white" stroke="#0891B2" stroke-width="1.5"/>
+            <!-- Menorah below building -->
+            <line x1="120" y1="218" x2="120" y2="226" stroke="#0891B2" stroke-width="2.5"/>
+            <line x1="98"  y1="218" x2="142" y2="218" stroke="#0891B2" stroke-width="2"/>
+            <line x1="104" y1="218" x2="104" y2="210" stroke="#0891B2" stroke-width="2"/>
+            <line x1="112" y1="218" x2="112" y2="208" stroke="#0891B2" stroke-width="2"/>
+            <line x1="128" y1="218" x2="128" y2="208" stroke="#0891B2" stroke-width="2"/>
+            <line x1="136" y1="218" x2="136" y2="210" stroke="#0891B2" stroke-width="2"/>
+            <ellipse cx="104" cy="208" rx="3" ry="5" fill="#0891B2" opacity=".6"/>
+            <ellipse cx="112" cy="206" rx="3" ry="6" fill="#0891B2" opacity=".8"/>
+            <ellipse cx="120" cy="204" rx="3.5" ry="7" fill="#0891B2"/>
+            <ellipse cx="128" cy="206" rx="3" ry="6" fill="#0891B2" opacity=".8"/>
+            <ellipse cx="136" cy="208" rx="3" ry="5" fill="#0891B2" opacity=".6"/>
+          </svg>
+        </div>
+        <div class="s-section__text">
+          <div class="s-section__num">חלק רביעי</div>
+          <div class="s-section__h2">פרקים תרבותיים</div>
+          <div class="s-section__time">⏱ 20 דקות</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑫ חיי קהילה -->
+    <section data-background-color="#ffffff">
+      <div class="s-content">
+        <div class="s-content__label">פרקים תרבותיים · חיי קהילה</div>
+        <div class="s-content__h2">העולם שנבנה: קהילות, תרבות ולימוד</div>
+        <div class="s-content__body">
+          <div class="s-content__bullets">
+            <ul class="bullets">
+              <li>קהילות פולין פיתחו מוסדות <span class="highlight">ייחודיים</span>: בית כנסת, ישיבה, בית חולים, בית דין — "עיר בתוך עיר"</li>
+              <li>פולין הפכה למרכז התורה — ישיבות קרקוב, לובלין ופוזנא קיבלו תלמידים מכל אירופה</li>
+              <li>חסידות, קשרים הדוקים בין קהילה לקהילה, מסורות ייחודיות לכל עיר</li>
+              <li>הישגי האמנות, המוזיקה, הספרות, התיאטרון ביידיש — עושר שנמשך מאות שנים</li>
+            </ul>
+          </div>
+          <div class="s-content__art">
+            <!-- Open book + star -->
+            <svg width="190" height="210" viewBox="0 0 190 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Open book -->
+              <path d="M20,170 L20,86 Q95,68 95,106 Q95,68 170,86 L170,170 Q95,152 95,170 Q95,152 20,170 Z" fill="#E0F2FE" stroke="#0891B2" stroke-width="2"/>
+              <!-- Spine -->
+              <line x1="95" y1="70" x2="95" y2="170" stroke="#0891B2" stroke-width="1.5"/>
+              <!-- Left page lines -->
+              <line x1="34" y1="105" x2="88" y2="105" stroke="#0891B2" stroke-width="1.2" opacity=".35"/>
+              <line x1="34" y1="118" x2="88" y2="118" stroke="#0891B2" stroke-width="1.2" opacity=".35"/>
+              <line x1="34" y1="131" x2="88" y2="131" stroke="#0891B2" stroke-width="1.2" opacity=".35"/>
+              <line x1="34" y1="144" x2="80" y2="144" stroke="#0891B2" stroke-width="1.2" opacity=".35"/>
+              <!-- Right page lines -->
+              <line x1="102" y1="105" x2="156" y2="105" stroke="#0891B2" stroke-width="1.2" opacity=".35"/>
+              <line x1="102" y1="118" x2="156" y2="118" stroke="#0891B2" stroke-width="1.2" opacity=".35"/>
+              <line x1="102" y1="131" x2="156" y2="131" stroke="#0891B2" stroke-width="1.2" opacity=".35"/>
+              <line x1="102" y1="144" x2="148" y2="144" stroke="#0891B2" stroke-width="1.2" opacity=".35"/>
+              <!-- Star above -->
+              <circle cx="95" cy="42" r="24" fill="#E0F2FE"/>
+              <polygon points="95,26 101,38 89,38" fill="#0891B2"/>
+              <polygon points="95,58 101,46 89,46" fill="#0891B2"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑬ מרכזי תרבות -->
+    <section data-background-color="#F9FAFB">
+      <div class="s-content">
+        <div class="s-content__label">פרקים תרבותיים · מפת הקהילות</div>
+        <div class="s-content__h2">מרכזי תרבות ולמידה בפולין</div>
+        <div class="s-content__body">
+          <div class="s-content__bullets">
+            <ul class="bullets">
+              <li>לפני מלחמת העולם השנייה: <span class="highlight">3.3 מיליון יהודים</span> — כ-10% מאוכלוסיית המדינה</li>
+              <li>מרכזים גדולים: <span class="highlight">וורשה, קרקוב, לבוב, לודז', וילנה</span> (ירושלים דליטא)</li>
+              <li>לכל קהילה מנהגים, ניב, מוזיקה ומאכלים משלה — עושר תרבותי עצום</li>
+              <li>הספרות, העיתונות, התיאטרון ביידיש — פרחו בפולין יותר מבכל מקום אחר בעולם</li>
+            </ul>
+          </div>
+          <div class="s-content__art">
+            <!-- Poland map with city pins -->
+            <svg width="185" height="210" viewBox="0 0 185 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Poland outline -->
+              <polygon points="22,50 52,33 128,36 158,50 167,82 160,112 146,136 130,153 108,162 86,160 62,150 40,132 24,104 20,72" fill="#E0F2FE" stroke="#0891B2" stroke-width="2" stroke-linejoin="round"/>
+              <!-- Warsaw (center) -->
+              <path d="M95 74 C95 74 82 88 82 96 C82 104.8 88 111 95 111 C102 111 108 104.8 108 96 C108 88 95 74 95 74Z" fill="#0891B2"/>
+              <circle cx="95" cy="96" r="7" fill="white"/>
+              <!-- Krakow (south) -->
+              <circle cx="80" cy="132" r="7" fill="#0891B2" opacity=".6"/>
+              <line x1="80" y1="122" x2="80" y2="132" stroke="#0891B2" stroke-width="2" opacity=".6"/>
+              <!-- Vilna (north) -->
+              <circle cx="128" cy="58" r="7" fill="#0891B2" opacity=".55"/>
+              <line x1="128" y1="48" x2="128" y2="58" stroke="#0891B2" stroke-width="2" opacity=".55"/>
+              <!-- Lwow (east) -->
+              <circle cx="138" cy="120" r="7" fill="#0891B2" opacity=".5"/>
+              <line x1="138" y1="110" x2="138" y2="120" stroke="#0891B2" stroke-width="2" opacity=".5"/>
+              <!-- Lodz (west-center) -->
+              <circle cx="68" cy="96" r="6" fill="#0891B2" opacity=".45"/>
+              <!-- Stat badge -->
+              <rect x="12" y="174" width="161" height="28" rx="8" fill="#0891B2"/>
+              <text x="92" y="193" font-size="12" font-weight="900" fill="white" text-anchor="middle" font-family="Heebo">3.3 מיליון יהודים · 10%</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑭ SECTION: סגירה -->
+    <section data-background-color="#ffffff">
+      <div class="s-section">
+        <div class="s-section__art">
+          <!-- Candle -->
+          <svg width="210" height="250" viewBox="0 0 210 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Glow -->
+            <ellipse cx="105" cy="118" rx="55" ry="60" fill="#E0F2FE" opacity=".5"/>
+            <!-- Flame layers -->
+            <path d="M105 55 Q124 80 122 108 Q118 130 105 135 Q92 130 88 108 Q86 80 105 55Z" fill="#0891B2" opacity=".2"/>
+            <path d="M105 64 Q120 86 118 109 Q114 128 105 132 Q96 128 92 109 Q90 86 105 64Z" fill="#0891B2" opacity=".45"/>
+            <path d="M105 74 Q116 94 114 111 Q111 124 105 128 Q99 124 96 111 Q94 94 105 74Z" fill="#0891B2"/>
+            <path d="M105 88 Q112 102 110 114 Q108 120 105 122 Q102 120 100 114 Q98 102 105 88Z" fill="white" opacity=".55"/>
+            <!-- Wick -->
+            <line x1="105" y1="128" x2="105" y2="140" stroke="#0891B2" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Candle body -->
+            <rect x="82" y="138" width="46" height="86" rx="7" fill="#E0F2FE" stroke="#0891B2" stroke-width="2"/>
+            <!-- Drips -->
+            <path d="M82 155 Q76 162 78 170 Q82 160 82 155Z" fill="#E0F2FE" stroke="#0891B2" stroke-width="1"/>
+            <path d="M128 160 Q134 168 132 176 Q128 165 128 160Z" fill="#E0F2FE" stroke="#0891B2" stroke-width="1"/>
+            <!-- Light rays -->
+            <line x1="105" y1="42"  x2="105" y2="30"  stroke="#E0F2FE" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="128" y1="52"  x2="137" y2="43"  stroke="#E0F2FE" stroke-width="2" stroke-linecap="round"/>
+            <line x1="82"  y1="52"  x2="73"  y2="43"  stroke="#E0F2FE" stroke-width="2" stroke-linecap="round"/>
+            <line x1="140" y1="80"  x2="152" y2="80"  stroke="#E0F2FE" stroke-width="2" stroke-linecap="round"/>
+            <line x1="70"  y1="80"  x2="58"  y2="80"  stroke="#E0F2FE" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="s-section__text">
+          <div class="s-section__num">חלק חמישי</div>
+          <div class="s-section__h2">סגירת המסרים</div>
+          <div class="s-section__time">⏱ 10 דקות</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑮ SUMMARY -->
+    <section data-background-color="#0891B2">
+      <div class="s-close">
+        <div class="s-close__text">
+          <div class="s-close__label">סיכום שיעור 1</div>
+          <div class="s-close__h2">מה לוקחים מהשיעור הזה?</div>
+          <div class="close-bullets">
+            <div class="close-bullet">הגעת יהודים לפולין קשורה לרדיפות ממערב אירופה — גירוש מצרפת, עלילות בגרמניה</div>
+            <div class="close-bullet">חוקת קליש 1264 יצרה מסגרת שסייעה לקהילות להתאגד ולשגשג</div>
+            <div class="close-bullet">הקהילות בנו עולם תרבותי עשיר שנמשך מאות שנים לפני השואה</div>
+            <div class="close-bullet">הטיול שלנו הוא לא רק על מוות — הוא גם על חיים, זיכרון ושורשים</div>
+          </div>
+        </div>
+        <div class="s-close__art">
+          <!-- White tree on teal -->
+          <svg width="220" height="240" viewBox="0 0 220 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="110" cy="88" r="68" fill="white" opacity=".14"/>
+            <circle cx="80"  cy="100" r="44" fill="white" opacity=".10"/>
+            <circle cx="142" cy="98"  r="40" fill="white" opacity=".10"/>
+            <circle cx="110" cy="72"  r="50" fill="white" opacity=".18"/>
+            <rect x="101" y="148" width="18" height="58" rx="6" fill="white" opacity=".38"/>
+            <path d="M110 204 Q86 220 62 234"  stroke="white" stroke-width="3.5" stroke-linecap="round" fill="none" opacity=".38"/>
+            <path d="M110 204 Q122 222 118 238" stroke="white" stroke-width="3"   stroke-linecap="round" fill="none" opacity=".38"/>
+            <path d="M110 204 Q134 220 158 232" stroke="white" stroke-width="3.5" stroke-linecap="round" fill="none" opacity=".38"/>
+            <polygon points="110,50 117,63 103,63" fill="white" opacity=".65"/>
+            <polygon points="110,77 117,64 103,64" fill="white" opacity=".65"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑯ QUESTIONS -->
+    <section data-background-color="#F9FAFB">
+      <div class="s-questions">
+        <div class="s-questions__art">
+          <svg width="200" height="220" viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Bubble 1 (top) -->
+            <rect x="16" y="18" width="128" height="68" rx="16" fill="#E0F2FE" stroke="#0891B2" stroke-width="2"/>
+            <path d="M34 86 L24 106 L56 86Z" fill="#E0F2FE" stroke="#0891B2" stroke-width="2" stroke-linejoin="round"/>
+            <!-- Three dots in bubble 1 -->
+            <circle cx="52"  cy="52" r="8" fill="#0891B2" opacity=".3"/>
+            <circle cx="80"  cy="52" r="8" fill="#0891B2" opacity=".3"/>
+            <circle cx="108" cy="52" r="8" fill="#0891B2" opacity=".3"/>
+            <!-- Bubble 2 (bottom right) -->
+            <rect x="56" y="128" width="128" height="68" rx="16" fill="white" stroke="#0891B2" stroke-width="2"/>
+            <path d="M166 128 L178 108 L150 128Z" fill="white" stroke="#0891B2" stroke-width="2" stroke-linejoin="round"/>
+            <!-- Lines in bubble 2 -->
+            <line x1="76"  y1="155" x2="164" y2="155" stroke="#0891B2" stroke-width="1.8" opacity=".3"/>
+            <line x1="76"  y1="168" x2="150" y2="168" stroke="#0891B2" stroke-width="1.8" opacity=".3"/>
+            <line x1="76"  y1="181" x2="158" y2="181" stroke="#0891B2" stroke-width="1.8" opacity=".3"/>
+          </svg>
+        </div>
+        <div class="s-questions__main">
+          <div class="s-questions__label">שאלות לדיון</div>
+          <div class="s-questions__h2">שאלות פתוחות לסיום</div>
+          <div class="qcards">
+            <div class="qcard"><div class="qcard__num">1</div><div class="qcard__text">מה לדעתך הביא יהודים לבחור בפולין — מסחר, בטחון, או קהילה?</div></div>
+            <div class="qcard"><div class="qcard__num">2</div><div class="qcard__text">האם חוקת קליש הצליחה להגן ביעילות על יהודים לאורך כל הדורות?</div></div>
+            <div class="qcard"><div class="qcard__num">3</div><div class="qcard__text">מה נרצה לבקר בפולין — בית כנסת, בית קברות, או ישיבה?</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑰ NEXT LESSON -->
+    <section data-background-color="#ffffff">
+      <div class="s-content">
+        <div class="s-content__label">הכנה · לשיעור הבא</div>
+        <div class="s-content__h2">שיעור 2 — קהילה ורצח עם</div>
+        <div class="s-content__body">
+          <div class="s-content__bullets">
+            <ul class="bullets">
+              <li>לקרוא בבית: עדות אחת על חיי יומיום בגטו ורשה — מפנקס של עד ראייה</li>
+              <li>לחשוב: מהי האחריות שלנו כישראלים כיום כלפי הזיכרון הזה?</li>
+              <li>לשיעור הבא נגיע עם <span class="highlight">שם אחד</span> של קהילה יהודית שנחרבה בפולין — ולחקור: איפה הייתה, כמה חיו שם, ומה קרה</li>
+            </ul>
+            <div style="margin-top:28px">
+              <span class="tag">שיעור 2: קהילה</span>
+              <span class="tag">שיעור 3: השואה</span>
+              <span class="tag">שיעור 4: עדויות</span>
+              <span class="tag">שיעור 5: הטיול</span>
+            </div>
+          </div>
+          <div class="s-content__art">
+            <!-- Step indicator -->
+            <svg width="130" height="210" viewBox="0 0 130 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="65" y1="38" x2="65" y2="190" stroke="#E0F2FE" stroke-width="3"/>
+              <circle cx="65" cy="38"  r="22" fill="#0891B2"/>
+              <circle cx="65" cy="110" r="22" fill="#E0F2FE" stroke="#0891B2" stroke-width="2.5"/>
+              <circle cx="65" cy="182" r="16" fill="#F9FAFB" stroke="#E0F2FE" stroke-width="2"/>
+              <text x="65" y="44"  font-size="14" font-weight="900" fill="white"     text-anchor="middle" font-family="Heebo">1</text>
+              <text x="65" y="116" font-size="14" font-weight="700" fill="#0891B2"   text-anchor="middle" font-family="Heebo">2</text>
+              <text x="65" y="187" font-size="12" font-weight="400" fill="#6B7280"   text-anchor="middle" font-family="Heebo">3</text>
+              <rect x="0"  y="26"  width="52" height="22" rx="6" fill="#0891B2" opacity=".12"/>
+              <rect x="0"  y="98"  width="52" height="22" rx="6" fill="#E0F2FE"/>
+              <text x="26" y="41"  font-size="9" font-weight="700" fill="#0891B2"  text-anchor="middle" font-family="Heebo">שורשים ✓</text>
+              <text x="26" y="113" font-size="9" font-weight="700" fill="#0891B2"  text-anchor="middle" font-family="Heebo">קהילה →</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true, slideNumber: true, progress: true, controls: true,
+    transition: 'slide', transitionSpeed: 'default', backgroundTransition: 'fade',
+    center: false, width: 1280, height: 720, margin: 0, plugins: []
+  });
+</script>
+</body>
+</html>
